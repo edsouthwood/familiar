@@ -1,6 +1,9 @@
 # Familiar — a creature that sits in on your D&D game
 
-<!-- TODO: docs/familiar.gif — the cat waking and answering a question. -->
+<p align="center">
+  <img src="docs/familiar.gif" width="288" alt="The Familiar puppet, a white plush cat, moving as it speaks">
+  <br><em>The optional puppet: a plush cat with a Pi and six servos inside.</em>
+</p>
 
 Put a tablet or laptop at the end of the table and a familiar lives on it: a
 cat (or an owl, or any of the fifteen *find familiar* forms) that answers to its
