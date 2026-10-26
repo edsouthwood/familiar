@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="familiar" viewBox="0 0 400 400" aria-label="Fish familiar">
+
+  <style>
+    /* What this creature looks like at rest.
+     *
+     * Inside the drawing rather than in shell.css beside it, because a shell
+     * has to be right opened on its own -- in an &lt;img&gt;, in a browser tab,
+     * in the shape picker on the hub -- and none of those load the stylesheet.
+     * Without it a familiar renders with its closed eyes drawn on top of its
+     * open ones, its mouth hanging open and its sleeping z's in the air.
+     *
+     * shell.css still wins wherever it has an opinion: every rule there is
+     * prefixed with body[data-state=...], which outranks a bare selector. */
+    .eyelid { transform: scaleY(0); }
+    #closed-eyes, #sparkles, #zzz, #bubbles, #tongue { opacity: 0; }
+    #mouth-open { visibility: hidden; }
+  </style>
+
+  <g id="tail">
+    <path class="edge" d="M 116 262 C 78 218, 46 202, 28 208 C 42 240, 42 284, 28 316
+             C 46 322, 78 306, 116 262 Z" fill="#e8873c"/>
+    <path d="M 110 262 C 84 234, 64 222, 52 224 C 62 244, 62 280, 52 300
+             C 64 302, 84 290, 110 262 Z" fill="#f5a95e"/>
+  </g>
+
+  <g id="fin-top">
+    <path class="edge" d="M 190 174 C 206 128, 244 106, 278 110 C 262 138, 250 164, 246 184 Z"
+          fill="#e8873c"/>
+  </g>
+  <g id="fin-bottom">
+    <path class="edge" d="M 196 340 C 210 366, 238 378, 262 372 C 248 354, 240 340, 238 330 Z"
+          fill="#e8873c"/>
+  </g>
+
+  <path class="edge" d="M 112 262 C 112 198, 172 156, 250 156 C 330 156, 380 202, 380 262
+           C 380 322, 330 368, 250 368 C 172 368, 112 326, 112 262 Z"
+        fill="#f5a95e"/>
+  <path d="M 160 306 C 214 346, 314 348, 372 300 C 356 342, 308 368, 250 368
+           C 196 368, 168 342, 160 306 Z" fill="#fbd7a6"/>
+  <path d="M 300 178 C 274 208, 274 316, 300 346" stroke="#e8873c"
+        stroke-width="7" fill="none" stroke-linecap="round" id="gill"/>
+  <g fill="#e8873c" opacity="0.75">
+    <path d="M 176 232 a 20 20 0 0 1 0 40 a 28 28 0 0 0 0 -40 Z"/>
+    <path d="M 214 218 a 24 24 0 0 1 0 48 a 32 32 0 0 0 0 -48 Z"/>
+    <path d="M 252 230 a 22 22 0 0 1 0 44 a 30 30 0 0 0 0 -44 Z"/>
+  </g>
+
+  <g id="fin-side">
+    <path class="edge" d="M 262 292 C 250 326, 224 342, 200 336 C 212 316, 220 302, 222 288 Z"
+          fill="#e8873c"/>
+  </g>
+
+  <g id="head">
+  <g class="eye" id="eye-left">
+    <circle cx="330" cy="234" r="27" fill="#ffffff"/>
+    <circle cx="330" cy="234" r="18" fill="#4a7fa8"/>
+    <g class="pupil">
+      <ellipse cx="330" cy="234" rx="11" ry="11" fill="#14101f"/>
+      <circle cx="336" cy="227" r="4" fill="#fff"/>
+    </g>
+    <circle class="eyelid" cx="330" cy="234" r="28" fill="#f5a95e"/>
+  </g>
+  <g id="closed-eyes" stroke="#c06a24" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M 303 234 Q 330 250 357 234"/>
+  </g>
+    <g id="mouth-closed" stroke="#c06a24" stroke-width="6" fill="none"
+       stroke-linecap="round">
+      <path d="M 378 276 Q 364 290 348 284"/>
+    </g>
+    <g id="mouth-open">
+      <ellipse cx="364" cy="286" rx="19" ry="15" fill="#a8452e"/>
+    </g>
+  </g>
+
+  <g id="bubbles" fill="#bfe4f5" opacity="0.9">
+    <circle class="bub b1" cx="372" cy="180" r="9"/>
+    <circle class="bub b2" cx="352" cy="140" r="6"/>
+    <circle class="bub b3" cx="366" cy="102" r="4"/>
+  </g>
+
+  <g id="sparkles" fill="#ffd97a">
+    <path class="spark s1" d="M 322 74 l 4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z"/>
+    <path class="spark s2" d="M 352 114 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+    <path class="spark s3" d="M 298 46 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+  </g>
+
+  <g id="zzz" fill="#b592ff" font-family="Georgia, serif" font-weight="bold">
+    <text class="z z1" x="296" y="96"  font-size="34">z</text>
+    <text class="z z2" x="322" y="68"  font-size="26">z</text>
+    <text class="z z3" x="344" y="46"  font-size="19">z</text>
+  </g>
+</svg>

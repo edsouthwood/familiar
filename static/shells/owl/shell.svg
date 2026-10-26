@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="familiar" viewBox="0 0 400 400" aria-label="Owl familiar">
+
+  <style>
+    /* What this creature looks like at rest.
+     *
+     * Inside the drawing rather than in shell.css beside it, because a shell
+     * has to be right opened on its own -- in an &lt;img&gt;, in a browser tab,
+     * in the shape picker on the hub -- and none of those load the stylesheet.
+     * Without it a familiar renders with its closed eyes drawn on top of its
+     * open ones, its mouth hanging open and its sleeping z's in the air.
+     *
+     * shell.css still wins wherever it has an opinion: every rule there is
+     * prefixed with body[data-state=...], which outranks a bare selector. */
+    .eyelid { transform: scaleY(0); }
+    #closed-eyes, #sparkles, #zzz, #bubbles, #tongue { opacity: 0; }
+    #mouth-open { visibility: hidden; }
+  </style>
+
+  <defs>
+    <clipPath id="owl-body-clip"><ellipse cx="200" cy="250" rx="105" ry="120"/></clipPath>
+    <clipPath id="owl-face-clip"><ellipse cx="200" cy="160" rx="96" ry="86"/></clipPath>
+  </defs>
+
+  <!-- perch -->
+  <rect x="96" y="350" width="208" height="13" rx="6" fill="#5a4632"/>
+  <rect x="96" y="350" width="208" height="5"  rx="2.5" fill="#6f5741"/>
+
+  <!-- talons -->
+  <g id="talons" stroke="#d9a441" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M 168 336 v 18 M 158 350 l -8 6 M 178 350 l 8 6"/>
+    <path d="M 232 336 v 18 M 222 350 l -8 6 M 242 350 l 8 6"/>
+  </g>
+
+  <!-- tail feathers (behind the body) -->
+  <g id="tail">
+    <path class="edge" d="M 200 300 L 172 372 L 200 358 L 228 372 Z" fill="#6b5540"/>
+    <path d="M 200 306 L 186 366 L 200 356 L 214 366 Z" fill="#836a51"/>
+  </g>
+
+  <!-- wings -->
+  <g id="wing-left" class="wing">
+    <path class="edge" d="M 118 196 C 84 214, 78 292, 108 336 C 126 300, 130 240, 130 200 Z" fill="#7a6047"/>
+    <path d="M 112 240 C 100 268, 102 302, 112 324" stroke="#5f4a36" stroke-width="4" fill="none"/>
+  </g>
+  <g id="wing-right" class="wing">
+    <path class="edge" d="M 282 196 C 316 214, 322 292, 292 336 C 274 300, 270 240, 270 200 Z" fill="#7a6047"/>
+    <path d="M 288 240 C 300 268, 298 302, 288 324" stroke="#5f4a36" stroke-width="4" fill="none"/>
+  </g>
+
+  <!-- body -->
+  <ellipse class="edge" cx="200" cy="250" rx="105" ry="120" fill="#9c7c5c"/>
+  <g clip-path="url(#owl-body-clip)">
+    <!-- speckled breast -->
+    <ellipse cx="200" cy="268" rx="70" ry="96" fill="#d8c1a3"/>
+    <g fill="#b39877" opacity="0.85">
+      <ellipse cx="176" cy="214" rx="7" ry="4"/><ellipse cx="222" cy="228" rx="7" ry="4"/>
+      <ellipse cx="198" cy="252" rx="7" ry="4"/><ellipse cx="164" cy="268" rx="7" ry="4"/>
+      <ellipse cx="234" cy="278" rx="7" ry="4"/><ellipse cx="188" cy="300" rx="7" ry="4"/>
+      <ellipse cx="220" cy="324" rx="7" ry="4"/><ellipse cx="170" cy="330" rx="7" ry="4"/>
+    </g>
+  </g>
+
+  <!-- head -->
+  <g id="head">
+    <!-- ear tufts -->
+    <g id="tuft-left" class="tuft">
+      <path class="edge" d="M 132 96 L 108 30 L 172 68 Z" fill="#7a6047"/>
+    </g>
+    <g id="tuft-right" class="tuft">
+      <path class="edge" d="M 268 96 L 292 30 L 228 68 Z" fill="#7a6047"/>
+    </g>
+
+    <ellipse class="edge" cx="200" cy="160" rx="96" ry="86" fill="#9c7c5c"/>
+    <!-- facial disc -->
+    <g clip-path="url(#owl-face-clip)">
+      <ellipse cx="200" cy="166" rx="84" ry="74" fill="#e2cdb1"/>
+      <path d="M 200 96 v 150" stroke="#cbb191" stroke-width="3"/>
+    </g>
+
+    <!-- eyes: huge amber owl eyes -->
+    <g class="eye" id="eye-left">
+      <circle cx="158" cy="152" r="34" fill="#f3e6d2"/>
+      <circle cx="158" cy="152" r="26" fill="#e0a52c"/>
+      <g class="pupil">
+        <circle cx="158" cy="152" r="14" fill="#1b1206"/>
+        <circle cx="166" cy="143" r="5" fill="#fff"/>
+      </g>
+      <circle class="eyelid" cx="158" cy="152" r="35" fill="#a8865f"/>
+    </g>
+    <g class="eye" id="eye-right">
+      <circle cx="242" cy="152" r="34" fill="#f3e6d2"/>
+      <circle cx="242" cy="152" r="26" fill="#e0a52c"/>
+      <g class="pupil">
+        <circle cx="242" cy="152" r="14" fill="#1b1206"/>
+        <circle cx="250" cy="143" r="5" fill="#fff"/>
+      </g>
+      <circle class="eyelid" cx="242" cy="152" r="35" fill="#a8865f"/>
+    </g>
+    <!-- contented closed eyes, asleep only -->
+    <g id="closed-eyes" stroke="#7a6047" stroke-width="5" fill="none" stroke-linecap="round">
+      <path d="M 132 152 Q 158 168 184 152"/>
+      <path d="M 216 152 Q 242 168 268 152"/>
+    </g>
+
+    <!-- beak -->
+    <path id="beak-closed" d="M 200 178 L 186 196 Q 200 208 214 196 Z" fill="#d9a441"/>
+    <g id="beak-open">
+      <path d="M 200 178 L 186 194 Q 200 200 214 194 Z" fill="#d9a441"/>
+      <path d="M 187 196 Q 200 226 213 196 Z" fill="#7a3b2e"/>
+    </g>
+  </g>
+
+  <!-- thinking sparkles -->
+  <g id="sparkles" fill="#ffd97a">
+    <path class="spark s1" d="M 322 74 l 4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z"/>
+    <path class="spark s2" d="M 352 114 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+    <path class="spark s3" d="M 298 46 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+  </g>
+
+  <!-- zzz when asleep -->
+  <g id="zzz" fill="#b592ff" font-family="Georgia, serif" font-weight="bold">
+    <text class="z z1" x="296" y="96"  font-size="34">z</text>
+    <text class="z z2" x="322" y="68"  font-size="26">z</text>
+    <text class="z z3" x="344" y="46"  font-size="19">z</text>
+  </g>
+</svg>

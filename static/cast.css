@@ -1,0 +1,116 @@
+/* Cast & stats page -- layered on top of timeline.css. Palette from tokens.css. */
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* A filter tab is a button that happens to stay pressed, so it is drawn as
+   one: unselected is the secondary outline every Cancel in the app wears, and
+   the selected one is the filled default. It used to be a third thing -- a
+   --surface fill with a line around it -- which matched nothing else on the
+   page it sits on. Only the state is declared here; button.css has the rest. */
+.tab-btn {
+  background: transparent;
+  border-color: var(--edge);
+  color: var(--text-mute);
+}
+/* Hovering is a hint and gets the quiet wash; being selected is a state and
+   gets the primary fill. They used to be the same colour, so hovering an
+   unselected tab made it look chosen. */
+.tab-btn:hover { background: var(--chip); color: var(--text); }
+.tab-btn.active {
+  background: var(--control);
+  border-color: transparent;
+  color: var(--on-control);
+}
+
+.card-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.card-list[hidden] { display: none; }
+
+/* Matched to #events li in timeline.css -- a cast entry and a timeline event
+   are the same object on the page and were drifting apart by a few pixels. */
+.card-list li {
+  background: var(--surface-lift);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.55rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  line-height: 1.45;
+}
+
+.entry-name {
+  color: var(--text-soft);
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.entry-desc {
+  color: var(--text-bright);
+  font-size: 1rem;
+}
+
+/* ---------- the dice table ----------
+ *
+ * `border-radius` with `border-collapse: collapse` is a promise the browser
+ * does not keep: collapsed borders are painted on the cells, so the corner
+ * cells square off the box the radius just rounded. `separate` with a zero
+ * spacing gets the same hairlines and actually clips.
+ *
+ * It scrolls in its own box rather than squeezing. Five columns of numbers on
+ * a phone either wrap "Character" down the left edge one letter at a time or
+ * push the page itself sideways; a table that scrolls where it stands does
+ * neither. */
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.table-scroll[hidden] { display: none; }
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface-lift);
+}
+table[hidden] { display: none; }
+
+th, td {
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* The counts are the content; the names are the index. Right-aligned so the
+   units line up under each other, which is the whole reason to put numbers in
+   a table rather than a sentence. */
+th + th, td + td { text-align: right; }
+
+th {
+  color: var(--text-dim);
+  font-weight: normal;
+  font-style: normal;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--surface);
+  border-bottom-color: var(--line);
+}
+
+td { color: var(--text-bright); font-variant-numeric: tabular-nums; }
+
+/* The name column carries the row, so it is the one that is allowed to be
+   read rather than counted. */
+td:first-child { color: var(--text); }
+
+tr:last-child td { border-bottom: none; }

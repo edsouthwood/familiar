@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="familiar" viewBox="0 0 400 400" aria-label="Lizard familiar">
+
+  <style>
+    /* What this creature looks like at rest.
+     *
+     * Inside the drawing rather than in shell.css beside it, because a shell
+     * has to be right opened on its own -- in an &lt;img&gt;, in a browser tab,
+     * in the shape picker on the hub -- and none of those load the stylesheet.
+     * Without it a familiar renders with its closed eyes drawn on top of its
+     * open ones, its mouth hanging open and its sleeping z's in the air.
+     *
+     * shell.css still wins wherever it has an opinion: every rule there is
+     * prefixed with body[data-state=...], which outranks a bare selector. */
+    .eyelid { transform: scaleY(0); }
+    #closed-eyes, #sparkles, #zzz, #bubbles, #tongue { opacity: 0; }
+    #mouth-open { visibility: hidden; }
+  </style>
+
+  <g id="tail">
+    <path class="edge" d="M 128 288 C 74 288, 44 262, 30 226 C 26 214, 36 206, 46 212
+             C 60 244, 86 264, 130 264 Z" fill="#5f9e5a"/>
+  </g>
+
+  <g id="leg-back">
+    <path class="edge" d="M 156 314 C 148 340, 156 356, 174 358 L 176 342 C 166 338, 164 328, 172 314 Z"
+          fill="#4d8449"/>
+    <path d="M 174 356 h 22 M 174 350 l -14 8" stroke="#4d8449" stroke-width="7"
+          stroke-linecap="round" fill="none"/>
+  </g>
+  <g id="leg-front">
+    <path class="edge" d="M 262 312 C 256 340, 264 356, 282 358 L 284 342 C 274 338, 272 328, 278 312 Z"
+          fill="#4d8449"/>
+    <path d="M 282 356 h 22 M 282 350 l -14 8" stroke="#4d8449" stroke-width="7"
+          stroke-linecap="round" fill="none"/>
+  </g>
+
+  <g id="crest">
+    <path class="edge" d="M 148 236 L 158 210 L 172 232 L 186 202 L 200 228 L 216 200
+             L 232 226 L 248 204 L 258 230 Z" fill="#8fd06a"/>
+  </g>
+
+  <path class="edge" d="M 130 268 C 130 232, 172 214, 214 214 C 256 214, 284 226, 296 244
+           C 306 260, 300 300, 268 314 C 226 332, 152 322, 138 300 Z"
+        fill="#6fb56a"/>
+  <path d="M 168 300 C 200 316, 250 314, 278 300 C 268 318, 214 328, 168 300 Z"
+        fill="#cfe6a4"/>
+  <g fill="#4d8449" opacity="0.7">
+    <ellipse cx="186" cy="248" rx="12" ry="8"/><ellipse cx="230" cy="240" rx="11" ry="7"/>
+    <ellipse cx="262" cy="258" rx="10" ry="7"/><ellipse cx="208" cy="276" rx="11" ry="7"/>
+  </g>
+
+  <g id="head">
+    <path class="edge" d="M 276 218 C 316 214, 366 224, 372 244 C 376 260, 344 274, 300 272
+             C 274 270, 262 250, 268 232 Z" fill="#6fb56a"/>
+  <g class="eye" id="eye-left">
+    <circle cx="302" cy="238" r="20" fill="#ffffff"/>
+    <circle cx="302" cy="238" r="13" fill="#e8b830"/>
+    <g class="pupil">
+      <ellipse cx="302" cy="238" rx="8" ry="8" fill="#14101f"/>
+      <circle cx="306" cy="233" r="3" fill="#fff"/>
+    </g>
+    <circle class="eyelid" cx="302" cy="238" r="21" fill="#6fb56a"/>
+  </g>
+  <g id="closed-eyes" stroke="#3f6e3c" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M 282 238 Q 302 250 322 238"/>
+  </g>
+    <g id="mouth-closed" stroke="#3f6e3c" stroke-width="4" fill="none"
+       stroke-linecap="round">
+      <path d="M 330 258 L 368 250"/>
+    </g>
+    <g id="mouth-open">
+      <path d="M 330 254 L 374 244 L 370 268 Z" fill="#8f3f4e"/>
+    </g>
+    <g id="tongue">
+      <path d="M 372 254 L 392 258 L 384 252 L 396 250" stroke="#e0607a"
+            stroke-width="4" fill="none" stroke-linecap="round"/>
+    </g>
+    <circle cx="286" cy="228" r="4" fill="#3f6e3c"/>
+  </g>
+
+  <g id="sparkles" fill="#ffd97a">
+    <path class="spark s1" d="M 322 74 l 4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z"/>
+    <path class="spark s2" d="M 352 114 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+    <path class="spark s3" d="M 298 46 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+  </g>
+
+  <g id="zzz" fill="#b592ff" font-family="Georgia, serif" font-weight="bold">
+    <text class="z z1" x="296" y="96"  font-size="34">z</text>
+    <text class="z z2" x="322" y="68"  font-size="26">z</text>
+    <text class="z z3" x="344" y="46"  font-size="19">z</text>
+  </g>
+</svg>

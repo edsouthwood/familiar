@@ -1,0 +1,332 @@
+/* ===== Session timeline viewer ===== Palette comes from tokens.css. */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+/* The scroll gutter. Past the top or bottom of the document the browser
+   paints the root element, not the body, so the body's gradient does not
+   reach the rubber-band overscroll -- it came out white. Two declarations,
+   both needed: an explicit root background, and color-scheme so the UA's own
+   surfaces (that overscroll, form controls, the scrollbar) are painted the
+   same way round. Both come from tokens.css, so both follow the theme. */
+html { background: var(--bg-void); color-scheme: var(--scheme); }
+
+body {
+  background: radial-gradient(ellipse at 50% 0%, var(--bg-deep) 0%, var(--bg-void) 70%);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- the page column ----------
+ *
+ * Both of these were `max-width: 640px`, set when a document page was a
+ * phone-sized list of events and nothing else. On a laptop that left the
+ * content in a ribbon down the middle with the window empty either side, and
+ * the docked navigation made it worse rather than better: a sidebar, a narrow
+ * ribbon, and a wide stripe of nothing. --page is the column now, and it grows
+ * where there is room for it. Prose still stops short of it -- see .field in
+ * hub.css -- because a readable line and a usable page are different widths.
+ *
+ * The vertical rhythm came down at the same time. The header used to reserve
+ * 1.2rem above and 0.6rem below, and main another 0.5rem on top of that, so a
+ * page opened with the better part of an inch of nothing above the first thing
+ * anybody came to read. */
+header {
+  width: 100%;
+  max-width: var(--page);
+  padding: 0.9rem 1rem 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+#back-link, #cast-nav-link {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+#back-link:hover, #cast-nav-link:hover { color: var(--text); }
+
+#cast-nav-link { margin-left: auto; }
+
+h1 {
+  font-size: clamp(1.2rem, 4vmin, 1.6rem);
+  font-weight: normal;
+  font-style: italic;
+  color: var(--text-soft);
+}
+
+main {
+  width: 100%;
+  max-width: var(--page);
+  padding: 0 1rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* ---------- the controls row ----------
+ *
+ * Which night, and which part of it. They wrap to two lines on a phone and sit
+ * side by side from about a tablet up; the filter is given the larger share of
+ * a shared line because a session date is a fixed width and a search term is
+ * however long the thing you half-remember was. */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.7rem;
+}
+
+/* Both halves start hidden and a table with no sessions recorded never
+   unhides either, which would otherwise leave an empty flex item collecting a
+   gap above and below it -- 0.8rem of nothing at the top of the emptiest page
+   on the site. Browsers without :has() get that gap back and nothing worse. */
+.controls:not(:has(> :not([hidden]))) { display: none; }
+
+#date-picker-row {
+  flex: 1 1 13rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+#date-picker-row[hidden] { display: none; }
+
+#filter-row {
+  flex: 2 1 15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+#filter-row[hidden] { display: none; }
+
+/* Look from field.css; this row only decides it takes the space the session
+   picker leaves. */
+#filter { flex: 1; min-width: 0; }
+
+/* "2 of 47 events". Reserves no space when the filter is empty, and never
+   wraps -- it is the answer to "did that do anything", and an answer that
+   pushes the list down the page while you type is its own small problem. */
+#filter-count {
+  flex: none;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+#filter-count:empty { display: none; }
+
+/* The matched span, in the same warm ink the search page uses -- somebody who
+   has used one of these boxes should recognise the other. */
+.event-text mark {
+  background: var(--mark-bg);
+  color: var(--mark-text);
+  border-radius: 3px;
+  padding: 0 0.15em;
+}
+
+/* Look from field.css; this row only decides that it takes the space left
+   over after the word "Session". */
+#date-picker { flex: 1; }
+
+#status {
+  color: var(--text-dim);
+  font-style: italic;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+#status:empty { display: none; }
+
+#events {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+#events[hidden] { display: none; }
+
+#events li {
+  background: var(--surface-lift);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.55rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  line-height: 1.45;
+}
+
+.event-row {
+  display: flex;
+  gap: 0.9rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.event-time {
+  flex: none;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 3.6rem;
+}
+
+.event-text {
+  color: var(--text-bright);
+  font-size: 1rem;
+  flex: 1;
+}
+
+.roll-badge {
+  font-size: 0.78rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--chip);
+  color: var(--text);
+}
+.roll-badge.roll-crit, .roll-badge.roll-nat1 {
+  background: var(--nat20-bg);
+  color: var(--nat20-text);
+}
+.roll-badge.roll-nat1 { background: var(--nat1-bg); color: var(--nat1-text); }
+
+/* An in-game day boundary, drawn wherever a long rest ended one. The day
+   number is derived from the rests across the whole campaign, so a session can
+   open mid-day-twelve -- see _campaign_days() in server.py. */
+.day-divider {
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0.8rem 0 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.day-divider:first-child { margin-top: 0; }
+.day-divider::before, .day-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.rest-badge {
+  font-size: 0.78rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--rest-bg);
+  color: var(--rest-text);
+}
+
+.weather-badge {
+  font-size: 0.78rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  color: var(--text-mute);
+  font-style: italic;
+}
+
+/* ── Amend UI (shared look for timeline events + cast entries) ─────────── */
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+
+.amend-toggle {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+/* `background: none` is load-bearing: button.css fills every button on hover,
+   and this one is a word in a sentence, not a control with a body. */
+.amend-toggle:hover { color: var(--text); background: none; }
+
+.amend-history { font-size: 0.85rem; color: var(--text-mute); width: 100%; }
+.amend-history summary { cursor: pointer; color: var(--accent); }
+.amend-history summary:hover { color: var(--text); }
+.amend-original, .amend-entry { margin-top: 0.35rem; padding-left: 0.9rem; }
+.amend-original { font-style: italic; color: var(--text-dim); }
+
+.amend-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 100%;
+}
+
+/* A correction is a sentence or two, so it opens at about two lines.
+ *
+ * `:not(.prose)` is load-bearing. The persona editor reuses .amend-form as its
+ * container, and this rule and textarea.prose in field.css have identical
+ * specificity -- so with this sheet loading second, a whole persona was being
+ * written through a two-line slot, which is exactly what 3.2rem is for and
+ * exactly what it is wrong for. */
+.amend-form textarea:not(.prose) { min-height: 3.2rem; }
+
+.amend-roll-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.amend-roll-row input { flex: 1; min-width: 8rem; }
+
+/* Rest and weather, sharing the roll row's look -- they are the same kind of
+   correction and should not look like a different feature. */
+.amend-tag-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.amend-tag-row input { flex: 1; min-width: 8rem; }
+
+
+/* Save, Cancel, Retire. The look comes from button.css now -- this row only
+   has an opinion about how they sit together. */
+.amend-actions { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.amend-error { color: var(--danger-text); font-size: 0.85rem; }
+
+.reprocess-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.reprocess-row[hidden] { display: none; }
+/* This button is where the app's button look came from; it now gets it from
+   button.css along with everything else, and has nothing left to say. */
+
+/* The event a search result pointed at. Stays marked rather than fading after
+   a second: somebody who followed a link may look away before it lands, and a
+   highlight they missed is worse than one that outstays its welcome. */
+#events li.targeted {
+  border-color: var(--mark-bg);
+  box-shadow: 0 0 0 1px var(--mark-bg);
+}

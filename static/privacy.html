@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy — Familiar</title>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/button.css">
+<link rel="stylesheet" href="/field.css">
+<link rel="stylesheet" href="/page.css">
+<script src="/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+  <h1>Privacy, in plain words</h1>
+  <p class="subtitle">
+    This familiar puts a microphone on your table. Everything below is what
+    that actually means — written to be read, not to be agreed to.
+  </p>
+
+  <h2>What is recorded, and when</h2>
+  <p>
+    <strong>Questions.</strong> When somebody says the familiar's name, the
+    words after it are sent to this server, answered, and both the question
+    and the answer are kept in that table's session log.
+  </p>
+  <p>
+    <strong>Table talk.</strong> Separately, there is a <em>record table
+    talk</em> switch. While it is on, everything the device hears is
+    transcribed and sent to this server in chunks, whether or not anyone was
+    talking to the familiar. This is how the timeline, the cast list, the
+    places and the in-game calendar get written. The switch is off by default,
+    lives on the device rather than on the account, and has to be turned on
+    again for each session.
+  </p>
+
+  <h2>Where the audio goes</h2>
+  <p>
+    This server never receives audio. Speech is turned into text by the
+    browser, and only text is sent. But the familiar uses the browser's own
+    speech recognition, and on most browsers that is a cloud service run by
+    the browser's maker — Chrome sends audio to Google, Safari and every
+    browser on an iPhone or iPad send it to Apple. If that matters to your
+    table, leave table-talk recording off.
+  </p>
+
+  <h2>Where the text goes</h2>
+  <p>
+    Transcribed text is sent to whichever language model the person running
+    this server configured — Google Gemini by default, or Anthropic's Claude,
+    or a model on their own network. Voices are generated on this server; no
+    voice samples are taken from anyone.
+  </p>
+
+  <h2>What is stored</h2>
+  <p>
+    Per table: a running memory, a timeline of events, corrections (with the
+    name of whoever made them), a cast list and places, the session logs of
+    questions and answers, the campaign notes and the familiar's persona, and
+    a search index over all of it. Per person: account holders have an email
+    address and a hashed password; players who joined by invitation have only
+    the name they typed. Token and character counts are kept per table per
+    month — numbers, not text. There are no analytics or third-party scripts,
+    and the only cookie is the one that keeps you signed in.
+  </p>
+
+  <h2>Who can see it</h2>
+  <p>
+    Everyone at your table can read and correct the record. The campaign notes
+    are visible only to the DM. The person running this server can read
+    everything on it — it is their machine.
+  </p>
+
+  <h2>Getting it back, and getting rid of it</h2>
+  <p>
+    A table's owner or DM can download everything the table has recorded as a
+    single archive, and can delete the table outright — immediately and
+    irreversibly. Leaving somebody else's table removes your membership; the
+    record of what happened stays with the table. To delete your account (and
+    the tables you own), ask whoever runs this server.
+  </p>
+
+  <h2>Telling your table</h2>
+  <p>
+    Consent is not something a DM can give on behalf of five other people. The
+    invitation page says what recording means before anyone accepts, and the
+    recording switch is visible on every device while it is on. If somebody
+    does not want to be recorded, leave the switch off — everything else works
+    exactly the same without it.
+  </p>
+
+  <p class="note"><a href="/">Home</a> · <a href="/login.html">Sign in</a></p>
+</main>
+
+</body>
+</html>

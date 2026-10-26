@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-labelledby="t">
+<title id="t">Octopus</title>
+<!-- One of the fifteen forms the find familiar spell allows. See
+     static/forms/README.md for the collection and how to put one on a page.
+     Stroked in currentColor: inlined in a document it takes the colour of the
+     text around it, and used as a CSS mask it takes whatever is painted
+     behind it. -->
+<style>
+  path, circle { fill: none; stroke: currentColor; stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+</style>
+  <g id="f-octopus">
+    <path d="M32 12 C38 12 44 17 44 26 C44 32 40 36 32 36"/>
+    <circle cx="38" cy="24" r="1.4"/>
+    <path d="M34 36 C36 42 34 48 30 52"/>
+    <path d="M38 35 C42 41 42 48 38 52"/>
+    <path d="M41 33 C46 38 48 45 45 50"/>
+    <path d="M43 29 C50 33 54 40 52 46"/>
+  </g>
+  <use href="#f-octopus" transform="translate(64,0) scale(-1,1)"/>
+</svg>

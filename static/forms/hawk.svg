@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-labelledby="t">
+<title id="t">Hawk</title>
+<!-- One of the fifteen forms the find familiar spell allows. See
+     static/forms/README.md for the collection and how to put one on a page.
+     Stroked in currentColor: inlined in a document it takes the colour of the
+     text around it, and used as a CSS mask it takes whatever is painted
+     behind it. -->
+<style>
+  path, circle { fill: none; stroke: currentColor; stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+</style>
+  <g id="f-hawk">
+    <path d="M32 20 C35 20 36 22 36 25 C42 24 50 22 58 26 L53 30 L58 31 L52 35 C46 33 40 33 36 34 C36 38 35 42 34 46 L37 51 L32 53"/>
+  </g>
+  <use href="#f-hawk" transform="translate(64,0) scale(-1,1)"/>
+</svg>

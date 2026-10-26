@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="familiar" viewBox="0 0 400 400" aria-label="Raven familiar">
+
+  <style>
+    /* What this creature looks like at rest.
+     *
+     * Inside the drawing rather than in shell.css beside it, because a shell
+     * has to be right opened on its own -- in an &lt;img&gt;, in a browser tab,
+     * in the shape picker on the hub -- and none of those load the stylesheet.
+     * Without it a familiar renders with its closed eyes drawn on top of its
+     * open ones, its mouth hanging open and its sleeping z's in the air.
+     *
+     * shell.css still wins wherever it has an opinion: every rule there is
+     * prefixed with body[data-state=...], which outranks a bare selector. */
+    .eyelid { transform: scaleY(0); }
+    #closed-eyes, #sparkles, #zzz, #bubbles, #tongue { opacity: 0; }
+    #mouth-open { visibility: hidden; }
+  </style>
+
+  <rect x="96" y="352" width="208" height="13" rx="6" fill="#4a4038"/>
+  <g stroke="#54483c" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M 172 340 v 16 M 162 352 l -9 6 M 182 352 l 9 6"/>
+    <path d="M 228 340 v 16 M 218 352 l -9 6 M 238 352 l 9 6"/>
+  </g>
+
+  <g id="tail">
+    <path class="edge" d="M 200 300 L 154 372 L 200 356 L 246 372 Z" fill="#1e1c2a"/>
+    <path d="M 200 308 L 176 364 L 200 354 L 224 364 Z" fill="#2f2c40"/>
+  </g>
+
+  <g id="wing-left" class="wing">
+    <path class="edge" d="M 126 202 C 88 224, 84 300, 116 342 C 132 302, 138 246, 138 206 Z"
+          fill="#242233"/>
+    <path d="M 116 250 C 106 278, 108 310, 118 330" stroke="#3d3a52"
+          stroke-width="5" fill="none"/>
+  </g>
+  <g transform="translate(400,0) scale(-1,1)">
+    <g id="wing-right" class="wing">
+      <path class="edge" d="M 126 202 C 88 224, 84 300, 116 342 C 132 302, 138 246, 138 206 Z"
+            fill="#242233"/>
+      <path d="M 116 250 C 106 278, 108 310, 118 330" stroke="#3d3a52"
+            stroke-width="5" fill="none"/>
+    
+    </g>
+  </g>
+
+  <ellipse class="edge" cx="200" cy="254" rx="96" ry="112" fill="#39354f"/>
+  <path d="M 200 158 C 244 158, 274 190, 276 232 C 248 216, 224 210, 200 210
+           C 176 210, 152 216, 124 232 C 126 190, 156 158, 200 158 Z"
+        fill="#3d3a52"/>
+  <g id="hackles">
+    <path d="M 140 232 C 164 258, 236 258, 260 232 C 254 262, 230 278, 200 278
+             C 170 278, 146 262, 140 232 Z" fill="#2b2840"/>
+  </g>
+
+  <g id="head">
+    <ellipse class="edge" cx="200" cy="156" rx="84" ry="76" fill="#484364"/>
+    <path d="M 200 82 C 244 82, 276 110, 280 148 C 252 128, 228 122, 200 122
+             C 172 122, 148 128, 120 148 C 124 110, 156 82, 200 82 Z"
+          fill="#3d3a52"/>
+  <g class="eye" id="eye-left">
+    <circle cx="162" cy="150" r="22" fill="#e8e4f2"/>
+    <circle cx="162" cy="150" r="14" fill="#8f7fb0"/>
+    <g class="pupil">
+      <ellipse cx="162" cy="150" rx="9" ry="9" fill="#14101f"/>
+      <circle cx="166" cy="144" r="3" fill="#fff"/>
+    </g>
+    <circle class="eyelid" cx="162" cy="150" r="23" fill="#2b2840"/>
+  </g>
+  <g class="eye" id="eye-right">
+    <circle cx="238" cy="150" r="22" fill="#e8e4f2"/>
+    <circle cx="238" cy="150" r="14" fill="#8f7fb0"/>
+    <g class="pupil">
+      <ellipse cx="238" cy="150" rx="9" ry="9" fill="#14101f"/>
+      <circle cx="242" cy="144" r="3" fill="#fff"/>
+    </g>
+    <circle class="eyelid" cx="238" cy="150" r="23" fill="#2b2840"/>
+  </g>
+  <g id="closed-eyes" stroke="#151320" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M 140 150 Q 162 163 184 150"/>
+    <path d="M 216 150 Q 238 163 260 150"/>
+  </g>
+    <g id="mouth-closed">
+      <path d="M 200 168 L 178 192 L 200 230 L 222 192 Z" fill="#15131f"/>
+      <path d="M 178 192 L 222 192" stroke="#4a4566" stroke-width="3" fill="none"/>
+    </g>
+    <g id="mouth-open">
+      <path d="M 200 168 L 180 188 L 200 198 L 220 188 Z" fill="#15131f"/>
+      <path d="M 200 202 L 182 210 L 200 234 L 218 210 Z" fill="#15131f"/>
+      <path d="M 186 198 L 214 198 L 200 208 Z" fill="#6b3444"/>
+    </g>
+  </g>
+
+  <g id="sparkles" fill="#ffd97a">
+    <path class="spark s1" d="M 322 74 l 4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z"/>
+    <path class="spark s2" d="M 352 114 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+    <path class="spark s3" d="M 298 46 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+  </g>
+
+  <g id="zzz" fill="#b592ff" font-family="Georgia, serif" font-weight="bold">
+    <text class="z z1" x="296" y="96"  font-size="34">z</text>
+    <text class="z z2" x="322" y="68"  font-size="26">z</text>
+    <text class="z z3" x="344" y="46"  font-size="19">z</text>
+  </g>
+</svg>

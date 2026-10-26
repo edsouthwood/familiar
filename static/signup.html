@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Make an account</title>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/button.css">
+<link rel="stylesheet" href="/field.css">
+<link rel="stylesheet" href="/page.css">
+<script src="/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+  <h1>Make an account</h1>
+  <p class="subtitle">For the DM. Your players join by link.</p>
+
+  <!-- Hidden until the server says whether this deployment wants one. A code
+       field on a familiar that is open to anyone is a question with no answer;
+       asking it anyway is how a form teaches people to distrust it. -->
+  <label id="code-row" hidden>Invitation code
+    <input id="code" type="text" autocomplete="off" spellcheck="false">
+    <span class="note">The person running this familiar will have given you one.</span>
+  </label>
+
+  <form id="form">
+    <label>Email
+      <input id="email" type="email" autocomplete="email" required>
+    </label>
+    <label>Password
+      <input id="password" type="password" autocomplete="new-password"
+             minlength="8" required>
+    </label>
+    <button type="submit">Make my account</button>
+    <p class="error" id="error"></p>
+  </form>
+
+  <p class="alt" id="closed" hidden>This familiar is not taking new accounts at
+    the moment. If you were expecting to make one, ask whoever invited you.</p>
+
+  <p class="alt">Already have one? <a href="/login.html">Sign in</a>.</p>
+</main>
+
+<script src="/account.js"></script>
+<script>
+  bindAuthForm("/api/signup", () => ({
+    email: byId("email").value.trim(),
+    password: byId("password").value,
+    code: byId("code").value,
+  }));
+
+  /* Ask what this deployment wants before drawing the form. Failing open --
+     showing the ordinary form -- is right: the server checks again on submit,
+     so the worst a failed fetch causes is one refusal with a clear message,
+     where hiding the form would strand somebody who is perfectly entitled to
+     an account. */
+  fetch("/api/signup")
+    .then((res) => res.json())
+    .then(({ mode }) => {
+      const codeRow = byId("code-row");
+      if (mode === "code") {
+        codeRow.hidden = false;
+        byId("code").required = true;
+        // Into the form, above the button, rather than orphaned above it.
+        byId("form").insertBefore(codeRow, byId("form").firstElementChild);
+      }
+      if (mode === "closed") {
+        byId("form").hidden = true;
+        byId("closed").hidden = false;
+      }
+    })
+    .catch(() => { /* leave the plain form; the server decides regardless */ });
+</script>
+</body>
+</html>

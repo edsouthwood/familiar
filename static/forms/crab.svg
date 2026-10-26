@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-labelledby="t">
+<title id="t">Crab</title>
+<!-- One of the fifteen forms the find familiar spell allows. See
+     static/forms/README.md for the collection and how to put one on a page.
+     Stroked in currentColor: inlined in a document it takes the colour of the
+     text around it, and used as a CSS mask it takes whatever is painted
+     behind it. -->
+<style>
+  path, circle { fill: none; stroke: currentColor; stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+</style>
+  <g id="f-crab">
+    <path d="M32 25 C39 25 46 29 46 34 C46 39 39 43 32 43"/>
+    <path d="M36 26 L37 20"/>
+    <circle cx="37" cy="18" r="1.6"/>
+    <path d="M45 30 L52 25"/>
+    <path d="M52 25 C56 20 61 21 61 25 C61 28 57 30 53 28"/>
+    <path d="M53 28 C52 31 54 34 57 33 C59 32 59 30 58 29"/>
+    <path d="M45 37 L53 41"/>
+    <path d="M43 40 L49 46"/>
+    <path d="M39 42 L42 49"/>
+  </g>
+  <use href="#f-crab" transform="translate(64,0) scale(-1,1)"/>
+</svg>

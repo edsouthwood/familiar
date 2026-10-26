@@ -1,0 +1,33 @@
+# Assumes the app is checked out at /opt/familiar, owned by a `familiar` user,
+# with its venv at /opt/familiar/.venv (./setup.sh makes it). Adjust to taste.
+#
+# Install: sudo cp deploy/familiar.service /etc/systemd/system/
+#          sudo systemctl daemon-reload && sudo systemctl enable --now familiar
+[Unit]
+Description=The tabletop familiar (brain server)
+After=network.target
+
+[Service]
+User=familiar
+WorkingDirectory=/opt/familiar
+EnvironmentFile=/opt/familiar/.env
+# gunicorn with gthread workers (flask-sock needs a threaded worker for the
+# long-lived /ws/state sockets).
+#
+# ONE worker only. Per-table state lives in TableRuntime objects, which are
+# *in-process*: a second worker would give each its own registry, so two bodies
+# at the same table could land in different processes and never see each other.
+# It also matters for data integrity — timeline event ids are positional,
+# computed by counting lines under a process-local lock, and amendments key on
+# that index. The escape hatch when one process is not enough is the gevent
+# worker (still one process), not -w 2.
+#
+# Threads are the dial instead: every websocket body and every SSE stream holds
+# one for its lifetime, so the ceiling is roughly (threads / bodies per table)
+# tables. 64 costs nothing while idle.
+ExecStart=/opt/familiar/.venv/bin/gunicorn -k gthread -w 1 --threads 64 --timeout 120 -b 127.0.0.1:8321 server:app
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

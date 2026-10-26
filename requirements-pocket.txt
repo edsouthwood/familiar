@@ -1,0 +1,5 @@
+# Optional: Kyutai's pocket-tts voice (TTS_PROVIDER=pocket or "pocket,piper").
+# It pulls in CPU PyTorch and its dependencies -- roughly 700 MB -- which is
+# why it is not in requirements.txt.
+#   .venv/bin/pip install -r requirements-pocket.txt
+pocket-tts==2.1.0

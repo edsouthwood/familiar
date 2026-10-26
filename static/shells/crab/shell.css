@@ -1,0 +1,110 @@
+/* ===== Crab shell — state animations =====
+ *
+ * No neck to tilt and no ears to perk, so the claws carry every state: open
+ * to listen, snapping while it speaks, tucked in when it sleeps.
+ *
+ * A shell owns its own appearance and reads none of the page palette:
+ * a creature has to render the same dropped into any page. Contract:
+ *   - the SVG root is #familiar, with a viewBox
+ *   - animations key off
+ *     body[data-state="asleep|idle|listening|thinking|speaking"]
+ *   - the shapes that make up its outline carry class="edge", which the
+ *     daylight theme strokes so a pale creature has an edge on parchment
+ */
+
+/* ---------- blinking (all awake states) ---------- */
+.eyelid {
+  transform-box: fill-box;
+  transform-origin: center top;
+  transform: scaleY(0);
+  animation: blink 5.6s infinite;
+}
+#eye-right .eyelid { animation-delay: 0.07s; }
+@keyframes blink {
+  0%, 94%, 100% { transform: scaleY(0); }
+  96%, 98%      { transform: scaleY(1); }
+}
+
+/* asleep: lids down, contented arcs, no blinking */
+body[data-state="asleep"] .eyelid { animation: none; transform: scaleY(1); }
+#closed-eyes { opacity: 0; }
+body[data-state="asleep"] #closed-eyes { opacity: 1; }
+
+/* ---------- pupils ---------- */
+.pupil {
+  transition: transform 0.3s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+body[data-state="thinking"]  .pupil { transform: translate(5px, -7px); }
+body[data-state="listening"] .pupil { transform: translate(0, -3px) scale(1.15); }
+
+/* ---------- mouth ---------- */
+#mouth-open { visibility: hidden; }
+body[data-state="speaking"] #mouth-open {
+  visibility: visible;
+  transform-box: view-box;
+  transform-origin: 200px 266px;
+  animation: mouth-flap 0.24s ease-in-out infinite alternate;
+}
+body[data-state="speaking"] #mouth-closed { visibility: hidden; }
+@keyframes mouth-flap {
+  from { transform: scaleY(0.25); }
+  to   { transform: scaleY(1); }
+}
+
+/* ---------- thinking sparkles ---------- */
+#sparkles { opacity: 0; }
+body[data-state="thinking"] #sparkles { opacity: 1; }
+body[data-state="thinking"] .spark { animation: twinkle 1.1s ease-in-out infinite; }
+.spark.s2 { animation-delay: 0.35s !important; }
+.spark.s3 { animation-delay: 0.7s !important; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1.1); }
+}
+.spark { transform-box: fill-box; transform-origin: center; }
+
+/* ---------- zzz when asleep ---------- */
+#zzz { opacity: 0; }
+body[data-state="asleep"] #zzz { opacity: 1; }
+body[data-state="asleep"] .z { animation: float-z 3s ease-in-out infinite; }
+.z.z2 { animation-delay: 1s !important; }
+.z.z3 { animation-delay: 2s !important; }
+@keyframes float-z {
+  0%   { opacity: 0; transform: translateY(6px); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ---------- claws: everything this creature has to say ---------- */
+.claw { transform-box: fill-box; transform-origin: right center; transition: transform 0.3s ease-out; }
+body[data-state="asleep"]    .claw { transform: scale(0.82) translateX(18px); }
+body[data-state="listening"] .claw { transform: rotate(-8deg) translateX(-8px); }
+body[data-state="speaking"]  .claw { animation: snap 0.3s ease-in-out infinite alternate; }
+body[data-state="thinking"]  .claw { animation: snap 0.8s ease-in-out infinite alternate; }
+@keyframes snap {
+  from { transform: rotate(2deg); }
+  to   { transform: rotate(-9deg) translateX(-6px); }
+}
+
+/* ---------- eyestalks ---------- */
+.stalk { transform-box: fill-box; transform-origin: center bottom; transition: transform 0.3s ease-out; }
+body[data-state="asleep"] .stalk { transform: scaleY(0.5); }
+body[data-state="listening"] #stalk-left  { transform: rotate(-6deg); }
+body[data-state="listening"] #stalk-right { transform: rotate(-6deg); }
+
+/* The eyes ride the stalks, so they duck with them. */
+.eye, #closed-eyes { transition: transform 0.3s ease-out; }
+body[data-state="asleep"] .eye,
+body[data-state="asleep"] #closed-eyes { transform: translateY(36px); }
+
+/* ---------- a scuttle while it thinks ---------- */
+.leg { transform-box: fill-box; transform-origin: right center; }
+body[data-state="thinking"] .leg { animation: scuttle 0.45s ease-in-out infinite alternate; }
+.leg.l2 { animation-delay: 0.12s !important; }
+.leg.l3 { animation-delay: 0.24s !important; }
+@keyframes scuttle {
+  from { transform: rotate(-5deg); }
+  to   { transform: rotate(6deg); }
+}

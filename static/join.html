@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join the table</title>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/button.css">
+<link rel="stylesheet" href="/field.css">
+<link rel="stylesheet" href="/page.css">
+<script src="/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+  <h1>Join the table</h1>
+  <p class="subtitle">No account needed. Just tell us what to call you.</p>
+
+  <!-- Consent belongs here and nowhere else. The DM cannot agree to a
+       microphone on behalf of five other people, and this is the one moment
+       every one of those people passes through. -->
+  <section class="notice">
+    <h2>Before you come in</h2>
+    <p>
+      This table has a familiar sitting at it. When somebody says its name, the
+      question is sent away to be answered — and there is a <strong>record table
+      talk</strong> switch which, while it is on, transcribes everything the
+      device hears and sends that away too, to be turned into a timeline of your
+      session.
+    </p>
+    <p>
+      The switch is off unless somebody turns it on, and it is visible on every
+      device while it is running. Nobody records audio: your words become text in
+      your own browser, and only text is sent. Whatever gets written down, you
+      can read and correct.
+    </p>
+    <p class="note">
+      <a href="/privacy.html" target="_blank" rel="noopener">What is kept, where
+        it goes, and how to get rid of it &rarr;</a>
+    </p>
+  </section>
+
+  <form id="form">
+    <label>Your name
+      <input id="name" type="text" autocomplete="nickname" maxlength="60" required>
+      <span class="note">This is what appears next to any corrections you make
+        to the session record.</span>
+    </label>
+    <label class="check">
+      <input id="consent" type="checkbox" required>
+      <span>I understand this table can be recorded while I am at it.</span>
+    </label>
+    <button type="submit">Come in</button>
+    <p class="error" id="error"></p>
+  </form>
+</main>
+
+<script src="/account.js"></script>
+<script>
+  /* The invitation token is the last part of the path: /join/<token>. */
+  const token = location.pathname.split("/").filter(Boolean).pop();
+  bindForm(`/api/join/${encodeURIComponent(token)}`,
+           () => ({ name: byId("name").value.trim() }),
+           (data) => { location.href = `/t/${encodeURIComponent(data.slug)}/`; });
+</script>
+</body>
+</html>

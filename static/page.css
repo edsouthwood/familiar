@@ -1,0 +1,212 @@
+/* Chrome for the pages that are not the familiar's screen: signing in, the den,
+ * accepting an invitation. Deliberately plain -- these are doorways, and a
+ * doorway that competes with the room is a badly designed doorway.
+ *
+ * Colours come from tokens.css; nothing here defines its own. */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { min-height: 100%; }
+
+/* The scroll gutter. Past the top or bottom of the document the browser
+   paints the root element, not the body, so the body's gradient does not
+   reach the rubber-band overscroll -- it came out white. Two declarations,
+   both needed: an explicit root background, and color-scheme so the UA's own
+   surfaces (that overscroll, form controls, the scrollbar) are painted the
+   same way round. Both come from tokens.css, so both follow the theme. */
+html { background: var(--bg-void); color-scheme: var(--scheme); }
+
+body {
+  background: radial-gradient(ellipse at 50% 0%, var(--bg-deep) 0%, var(--bg-void) 70%);
+  color: var(--text);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem 3rem;
+  line-height: 1.5;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 30rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.4rem;
+}
+
+/* The den, which is a list of things rather than a form. It has the room, and
+   a campaign name plus a row of links reads better across one line than
+   wrapped inside a 44rem column. */
+.sheet.wide { max-width: 52rem; }
+
+h1 {
+  font-size: 1.6rem;
+  font-weight: normal;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 1.1rem;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+
+/* Look from field.css. What is left is this page's own opinion: the doorway
+   forms stack, one field per line, each under its own label. */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+/* A whole persona or a campaign note gets written in here, so it opens tall
+   and its lines are set looser than a one-line box would want. */
+textarea { min-height: 12rem; line-height: 1.45; }
+
+/* Buttons come from button.css, which every page loads. This sheet used to
+   carry its own -- a size larger and with a visible border -- which is why
+   "Create the table" and "Apply corrections to memory" were plainly two
+   different buttons. */
+
+.row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+
+.error {
+  color: var(--danger-text);
+  font-size: 0.9rem;
+  min-height: 1.3rem;
+  margin-top: 0.6rem;
+}
+
+/* .note is in field.css now -- every page loads that one, and this one was
+   read by five pages out of thirteen. */
+
+a { color: var(--text-soft); }
+a:hover { color: var(--text-bright); }
+
+.alt {
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+/* -- the den -- */
+
+.tables {
+  list-style: none;
+  margin: 0.9rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tables li {
+  background: var(--surface-lift);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+}
+
+.tables .table-name { font-size: 1.15rem; }
+
+.tables .role {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-left: 0.5rem;
+}
+
+.tables .links { margin-top: 0.5rem; display: flex; gap: 1rem; font-size: 0.9rem; }
+
+details { margin-top: 1.1rem; }
+details summary { cursor: pointer; color: var(--accent); }
+details > *:not(summary) { margin-top: 0.9rem; }
+
+.empty {
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 1.2rem 0;
+}
+
+.invite-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  word-break: break-all;
+  color: var(--text-mute);
+}
+
+/* This month's spend, in the DM's per-table panel. */
+dl.usage {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1rem;
+  font-size: 0.9rem;
+  margin: 0.6rem 0;
+}
+
+dl.usage dt { color: var(--text-dim); }
+dl.usage dd { color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* A block somebody has to read before they act -- the recording notice on the
+   invitation page. Bordered and inset rather than styled as an alert: it is
+   not a warning, it is the terms of sitting down, and a red box would make
+   people click past it faster rather than slower. */
+.notice {
+  background: var(--surface-lift);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.4rem;
+}
+
+.notice h2 {
+  font-size: 1rem;
+  font-weight: normal;
+  font-style: italic;
+  color: var(--text-soft);
+  margin-bottom: 0.6rem;
+}
+
+.notice p {
+  color: var(--text-mute);
+  font-size: 0.92rem;
+  margin-bottom: 0.6rem;
+}
+.notice p:last-child { margin-bottom: 0; }
+.notice strong { color: var(--text-bright); font-weight: normal; }
+
+/* A checkbox and its sentence on one line, the box aligned to the first line
+   of text rather than floating in the middle of a wrapped one. */
+label.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: var(--text-mute);
+  font-size: 0.95rem;
+}
+label.check input { width: auto; margin-top: 0.3rem; }
+
+/* Export, delete, leave. Set apart by a rule rather than by alarm colours --
+   see den.js: taking your own data back is a normal thing to want, and a red
+   "danger zone" is where people learn not to look. */
+.your-data {
+  border-top: 1px solid var(--line);
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: flex-start;
+}
+.your-data .row { gap: 0.5rem; width: 100%; }
+.your-data input { flex: 1; }
+.your-data button { flex: none; }

@@ -1,0 +1,269 @@
+/* ===== Design tokens =====
+ *
+ * One source for the colours, type and shared measures used by every page: the
+ * familiar's stage, the timeline and the cast sheet. Before this file each page
+ * kept its own hand-copied hex values, which is why timeline.css used to open
+ * with the comment "palette matches familiar.css" -- a promise the code could
+ * not keep.
+ *
+ * There are two palettes now, and the second one is the reason the first is
+ * worth having. `:root` is the dark table -- a lamp-lit evening, which is what
+ * this thing is for -- and `:root[data-theme="light"]` is the same vocabulary
+ * spoken in daylight. Every name below means the same *job* in both: --surface
+ * is a panel, --text-bright is the thing you are meant to read first. Only the
+ * values move. No stylesheet downstream knows which palette it is wearing, and
+ * that is the whole design: a page that asks for a colour by name cannot get
+ * the theme wrong.
+ *
+ * The attribute is stamped on <html> by theme.js before the body is parsed,
+ * from the reader's stored choice or, until they make one, from the operating
+ * system. With no JavaScript at all the dark palette stands, which is the
+ * right default for a creature that sits on a table in the evening.
+ *
+ * Shells (static/shells/<id>/shell.css) deliberately do NOT use these tokens.
+ * A shell is a self-contained creature: its fur, feathers and glow are its own
+ * business, and a shell dropped in from elsewhere must render without knowing
+ * anything about the page chrome around it. A cat drawn to be seen in the dark
+ * is still legible on parchment; a cat that read the page's palette would be a
+ * cat that broke when the page changed its mind.
+ */
+
+:root {
+  /* Which way round the user agent should paint the things we do not: the
+     rubber-band overscroll past the top of a document, form controls, the
+     scrollbar. Declared as a token so the four page stylesheets can each say
+     `color-scheme: var(--scheme)` and none of them has to know the answer. */
+  --scheme: dark;
+
+  /* Surfaces, darkest first. --bg-void and --bg-deep are the two stops of the
+     page background gradient; each page picks its own focal point. */
+  --bg-void:      #120c22;
+  --bg-deep:      #241a3e;
+  --surface:      #1d1538;   /* panels, cards, the settings drawer */
+  --surface-lift: #2c2150;   /* raised on a panel: speech bubble, rows */
+  --field:        #3a2b66;   /* text inputs */
+
+  /* Lines.
+   *
+   * --line and --line-soft rule things off: the edge of a card, the divider
+   * between two rows, the hairline under a table heading. They are quiet
+   * because that is the job -- a page whose every box shouts its border is a
+   * page of boxes.
+   *
+   * --edge is the third one and it is not decoration. It is the boundary of
+   * something you can *operate* -- a field, a dropdown, an outlined button --
+   * and WCAG 1.4.11 asks such a boundary for 3:1 against what surrounds it,
+   * because a control you cannot find the edge of is a control you cannot see
+   * is there. --line manages between 1.3:1 and 2.0:1 depending on which
+   * surface it lands on, which is fine for a rule and not fine for a text box.
+   *
+   * Tuned against the worst case rather than the common one: the value below
+   * clears 3:1 against every surface in this palette, including the lightest
+   * (--surface-lift) and the field fill it sits on top of.
+   *
+   * The split is the same one --control and --line already make a few lines
+   * down: same idea, different job, kept separate so one can move without
+   * dragging the other. */
+  --line:      #4a3a80;
+  --line-soft: #3a2e63;
+  --edge:      #8272ae;
+
+  /* ===== Control fill =====
+   *
+   * --control is the fill of a *primary button* and nothing else, and it moved
+   * a long way to become that. It used to be #4a3a80, the same violet as
+   * --line, which meant a filled button was 1.53:1 against the page here and
+   * 1.07:1 in daylight -- a block you could not see the edges of, identifiable
+   * only by reading the words inside it.
+   *
+   * Fixing that turned out to have exactly one answer, and it is worth writing
+   * down because it looks at first like a preference and is not. A fill needs
+   * 3:1 against the surfaces around it; the label inside needs 4.5:1 against
+   * the fill. On the dark table every surface is near-black, so a fill that
+   * clears 3:1 has to be light -- and there is then no violet left dark enough
+   * for a pale label to sit on. Searched exhaustively, a light-labelled button
+   * has no workable value on this palette at all. Daylight is the same problem
+   * mirrored: pale surfaces, so the fill must go dark, and no dark label works.
+   *
+   * So the primary button inverts against its page, in both themes: a pale
+   * lavender chip carrying dark ink in the evening, a deep violet one carrying
+   * pale ink at noon. That is what --on-control is for. It is also, as it
+   * turns out, what a primary button is meant to look like -- the one element
+   * on the page that does not blend into it.
+   *
+   * --chip is where the old --control went, unchanged. It was doing two jobs
+   * under one name: the fill of a button, which has to be found, and the wash
+   * behind a badge or a hover, which has to stay out of the way. Splitting
+   * them is the same move --line and --edge make above. */
+  --control:       #b59edb;
+  --control-hover: #c9b8e5;
+  --on-control:    #1d1538;
+  --chip:          #4a3a80;
+
+  /* Text, brightest first */
+  --text-bright: #f0eaff;  /* answers, names, numbers */
+  --text:        #e8e0ff;  /* body */
+  --text-mute:   #c9bcec;
+  --text-soft:   #b9a8e8;  /* status line, section headings */
+  --text-dim:    #9d8cc9;  /* labels, timestamps, the question above an answer */
+  --text-faint:  #7d6ca8;  /* footer */
+
+  /* The sheet the navigation drawer slides over. It used to be --bg-void at
+     low opacity, on the grounds that the darkest surface in the palette is
+     what a page recedes towards. That reasoning only holds in the dark: in
+     daylight the darkest surface is *ink*, and dimming a white page with more
+     white dims nothing. So the scrim is its own colour, and its own opacity --
+     a light page needs less of it to read as "behind something". */
+  --scrim:         #120c22;
+  --scrim-opacity: 0.55;
+
+  /* The halo behind the familiar while it is listening. Carried as a token
+     with its alpha baked in, because what it has to sit on changes: cold light
+     spilling onto near-black, or a shadow of the same colour on parchment. */
+  --glow: rgba(140, 220, 255, 0.28);
+
+  --accent: #8a6ad1;       /* form controls, disclosure triangles */
+
+  /* Meaning */
+  --danger:      #e07a7a;  /* the error line under the familiar */
+  --danger-text: #ff9d9d;  /* inline amendment errors */
+
+  /* A long rest ends an in-game day -- night colours, distinct from the
+     purple of a dice roll so the two badges never read as the same kind of
+     thing. Weather is atmosphere rather than an outcome, so it gets an outline
+     and no fill. */
+  --rest-bg:   #24405a;
+  --rest-text: #bcdcf0;
+
+  /* The matched span in a search snippet. Warm, because every other coloured
+     thing on these pages is purple or blue and a highlight has to be findable
+     while your eye is scanning down a list of them. */
+  --mark-bg:   #7a5f1e;
+  --mark-text: #ffe9a8;
+  /* The warm --edge. The DM-only box marks itself with a warm border rather
+     than a red one -- it is not a warning, it is a different audience -- and
+     it was drawing that border in --mark-bg, a fill colour pressed into edge
+     duty: 2.7:1 here and 1.06:1 in daylight, which is to say the box that
+     says "only you can see this" was the one box on the page with no visible
+     edge at all. Same job as --edge, same 3:1 to clear, warm instead. */
+  --mark-edge: #9d7925;
+
+  --nat20-bg:   #5a2f7a;
+  --nat20-text: #f0c8ff;
+  --nat1-bg:    #6a2020;
+  --nat1-text:  #ffc8c8;
+
+  /* ===== Measures =====
+   *
+   * Not colours, and here for the same reason the fonts are: they are shared,
+   * and a shared number that is written down twice is a number that will
+   * eventually disagree with itself.
+   *
+   * --rail is the docked navigation on a wide screen, and it is load-bearing
+   * in two places at once -- the drawer's own width and the padding the page
+   * holds clear for it (both in nav.css). Those two must be the same value or
+   * the sidebar either overlaps the first column of text or leaves a stripe of
+   * background beside itself.
+   *
+   * --page is how wide a document page's column is allowed to grow. It was
+   * 640px, chosen when these pages were a phone-sized list of events and
+   * nothing else; on a laptop it left the content in a narrow ribbon with the
+   * rest of the window empty either side.
+   *
+   * --prose is narrower on purpose, and only the things you *read or write*
+   * sentences into use it. A textarea stretched to --page is a 90-character
+   * line, which is past the point where the eye reliably finds the start of
+   * the next one.
+   *
+   * Absent from the daylight block with the fonts, and for the same reason: a
+   * measurement is not a colour and does not change with the light. */
+  --rail:  15rem;
+  --page:  56rem;
+  --prose: 40rem;
+
+  --font-body: Georgia, 'Times New Roman', serif;
+  /* For the things that are typed rather than read: a pairing code, a command
+     to paste into a terminal. Second copy of this stack is how it stops being
+     one thing. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ===== Daylight =====
+ *
+ * Not an inversion. Flipping the dark palette about its midpoint gives grey
+ * text on lilac, because the dark theme's contrast is carried by luminance
+ * against near-black and there is no such range on the other side. This is the
+ * same table drawn on parchment: the violet moves from being the *light* in
+ * the picture to being the *ink*, so the surfaces go pale and near-neutral and
+ * every text token becomes a shade of that same violet, darkest first.
+ *
+ * The one rule this block keeps is the ordering of each ramp, because that is
+ * what the rest of the site actually depends on. --surface-lift must read as
+ * raised from --surface (so it is the whiter of the two, not the darker), and
+ * --text-bright through --text-faint must stay monotonic in contrast, or a
+ * timestamp starts shouting over the sentence it belongs to.
+ *
+ * Fonts are absent on purpose: a typeface is not a colour and does not change
+ * with the light.
+ */
+:root[data-theme="light"] {
+  --scheme: light;
+
+  /* The page is the palest violet rather than white -- white would leave the
+     panels below it with nothing to be raised from. */
+  --bg-void:      #e3daf3;
+  --bg-deep:      #f2ecfb;
+  --surface:      #fbf9ff;
+  --surface-lift: #ffffff;
+  --field:        #f0e9fa;
+
+  --line:      #cbbce8;
+  --line-soft: #ded3f0;
+  /* Ink again, and darker than it looks it needs to be: the pale surfaces of
+     the daylight theme leave a border very little room, and #8f7fb8 -- which
+     reads as plenty against a white card -- is only 2.6:1 against --bg-void. */
+  --edge:      #7a6aa6;
+
+  /* Inverted, for the reason set out in the dark block: at noon it is the
+     surfaces that are pale, so the button is the dark thing on the page. */
+  --control:       #55348d;
+  --control-hover: #452b73;
+  --on-control:    #f0eaff;
+  --chip:          #ded2f4;
+
+  /* Ink, darkest first. The same six steps, the same jobs. */
+  --text-bright: #241a3e;
+  --text:        #322650;
+  --text-mute:   #4a3c6d;
+  --text-soft:   #5a4a85;
+  --text-dim:    #6d5d99;
+  --text-faint:  #7e6ea8;
+
+  /* Ink, not parchment -- see the note in the dark block. Lighter-handed,
+     too: a pale page only has to be pushed back a little to sit behind
+     something, and 0.55 of near-black over it reads as the lamp going out. */
+  --scrim:         #241a3e;
+  --scrim-opacity: 0.34;
+
+  /* A halo cannot be brighter than parchment, so in daylight the familiar
+     casts one instead: the same cold blue, deeper, reading as a pool of
+     shadow-light around the creature rather than as a lamp behind it. */
+  --glow: rgba(78, 142, 205, 0.30);
+
+  --accent: #6a4bb8;
+
+  --danger:      #b23b3b;
+  --danger-text: #9c2b2b;
+
+  --rest-bg:   #cfe4f4;
+  --rest-text: #1d3b52;
+
+  --mark-bg:   #ffe6a0;
+  --mark-text: #5a4310;
+  --mark-edge: #8c6c21;
+
+  --nat20-bg:   #e6d2f5;
+  --nat20-text: #4a1c66;
+  --nat1-bg:    #f7d6d6;
+  --nat1-text:  #7a1a1a;
+}

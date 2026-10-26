@@ -1,0 +1,17 @@
+# Append this to /etc/caddy/Caddyfile, with your own domain in place of
+# familiar.example.com and its DNS A record pointing at this box. Caddy fetches
+# and renews the HTTPS certificate on its own.
+#
+# HTTPS matters for more than privacy here: browsers only allow the microphone
+# on a secure origin, so a phone or iPad at the table cannot be the familiar's
+# ears over plain http (localhost is the one exception).
+#
+# No password block: the app has its own accounts. Gate signups with
+# SIGNUP_CODE in .env so a stranger who finds the URL cannot make one.
+
+familiar.example.com {
+	# HSTS: once a browser has seen the site over https it never tries plain
+	# http again, so a cookie cannot leak on that first unredirected request.
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy 127.0.0.1:8321
+}

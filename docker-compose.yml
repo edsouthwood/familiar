@@ -1,0 +1,40 @@
+# Tier 3: the familiar on an always-on box, with automatic HTTPS.
+#
+#   cp .env.example .env        # set SECRET_KEY, GEMINI_API_KEY, SIGNUP_CODE
+#   echo DOMAIN=familiar.example.com >> .env
+#   docker compose --profile https up -d
+#
+# Point DOMAIN's DNS A record at this box first, and open ports 80 and 443:
+# Caddy fetches the certificate on first start. Without the `https` profile
+# only the familiar runs, on port 8321 -- fine behind a proxy you already have.
+
+services:
+  familiar:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    ports:
+      # Localhost only: the way in from outside is Caddy.
+      - "127.0.0.1:8321:8321"
+
+  caddy:
+    image: caddy:2.8
+    profiles: ["https"]
+    restart: unless-stopped
+    depends_on: [familiar]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env, e.g. familiar.example.com}
+    command: >
+      caddy reverse-proxy --from ${DOMAIN} --to familiar:8321
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

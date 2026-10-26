@@ -1,0 +1,9 @@
+{
+  "name": "Whiskers",
+  "wakeWords": ["whiskers", "whisker", "whiskas"],
+  "lang": "en-GB",
+  "voice": "",
+  "shell": "cat",
+  "sounds": "cat",
+  "owner": ""
+}

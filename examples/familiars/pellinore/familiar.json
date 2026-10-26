@@ -1,0 +1,9 @@
+{
+  "name": "Pellinore",
+  "wakeWords": ["pellinore", "pelinore", "pellanor"],
+  "lang": "en-GB",
+  "voice": "",
+  "shell": "owl",
+  "sounds": "owl",
+  "owner": ""
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title id="page-title">Session timeline</title>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/button.css">
+<link rel="stylesheet" href="/field.css">
+<link rel="stylesheet" href="/nav.css">
+<link rel="stylesheet" href="/timeline.css">
+<script src="/theme.js"></script>
+</head>
+<body class="with-rail">
+
+<nav id="table-nav"></nav>
+
+<header>
+  <h1 id="heading">Session timeline</h1>
+</header>
+
+<main>
+  <!-- The session you are reading, and a filter over it. One row, because
+       they are the same question asked at two scales: which night, and which
+       part of it. -->
+  <div class="controls">
+    <label id="date-picker-row" hidden>
+      Session
+      <select id="date-picker"></select>
+    </label>
+
+    <div id="filter-row" hidden>
+      <input id="filter" type="search" placeholder="Filter this session…"
+             maxlength="120" autocomplete="off" aria-describedby="filter-count">
+      <span id="filter-count" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <div class="reprocess-row" id="reprocess-row" hidden>
+    <button id="reprocess-btn" type="button">Apply corrections to memory</button>
+    <span id="reprocess-status"></span>
+  </div>
+
+  <div id="status"></div>
+  <ol id="events" hidden></ol>
+</main>
+
+<script src="/table.js"></script>
+<script src="/nav.js"></script>
+<script src="/review-shared.js"></script>
+<script src="/timeline.js"></script>
+</body>
+</html>

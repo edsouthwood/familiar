@@ -1,0 +1,201 @@
+/* The table's navigation, on every surface it has.
+ *
+ * One component, two shapes. On a narrow screen -- and on the familiar's stage
+ * at every width -- it is a fixed toggle in the top-left corner and a drawer
+ * that slides over the page. On a wide screen the document pages dock it
+ * instead: the same drawer, always open, with the page holding --rail clear
+ * for it.
+ *
+ * The stage never docks, and that is not a preference. familiar.css centres
+ * the creature with a flex body, so anything in that flow -- down to a
+ * padding-left -- moves the creature and drags its listening glow off centre
+ * with it. An overlay costs the stage exactly no layout. That is why the dock
+ * below is keyed off .with-rail, which is the class the document pages set and
+ * the stage deliberately does not: the rule that mattered was never "no media
+ * queries", it was "nothing in the stage's flow", and this keeps it.
+ *
+ * Palette and measures from tokens.css; nothing here defines its own. */
+
+/* A zero-size anchor: everything inside is fixed, so putting the <nav> element
+   into a page costs that page nothing. That is the whole trick. */
+#table-nav { position: fixed; top: 0; left: 0; z-index: 40; }
+
+/* Room for the toggle -- on the header, not on the page.
+ *
+ * This was `padding-left: 3.6rem` on the whole body, which bought the toggle a
+ * clear corner and charged every document page a permanent 3.6rem gutter down
+ * its entire length to do it. On a phone that is most of a word per line, on
+ * every line, for the sake of one button in the first 3rem of the page.
+ *
+ * It does not need to be paid for twice. The toggle is an opaque chip with a
+ * border: content that scrolls under it is hidden behind it, not tangled with
+ * it. The one thing that must never collide is the heading, because that is
+ * the only element level with the toggle that has to stay readable -- so the
+ * reservation is made on the header alone and the page keeps its full width.
+ * theme.css makes the mirror of this on the right, for the lamp, for exactly
+ * the same reason. */
+body.with-rail > header { padding-left: 3.4rem; }
+
+.nav-toggle {
+  position: fixed;
+  z-index: 42;
+  top: calc(0.7rem + env(safe-area-inset-top, 0px));
+  left: calc(0.7rem + env(safe-area-inset-left, 0px));
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex-direction: column;
+  background: var(--surface);
+  /* The only thing marking this as a control rather than three stripes. */
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0;
+}
+.nav-toggle:hover { background: var(--chip); }
+/* Three spans rather than a glyph: ☰ renders at wildly different weights
+   across the platforms this runs on, and one of them is an iPad. */
+.nav-toggle span {
+  display: block;
+  width: 1rem;
+  height: 1.5px;
+  background: var(--text-soft);
+  border-radius: 1px;
+}
+
+/* The scrim is a flat token at low opacity rather than an rgba() -- raw hex is
+   not allowed outside tokens.css, and a colour with an alpha channel would be
+   one. It used to be --bg-void, the darkest surface in the palette, on the
+   reasoning that a page recedes towards its own background. That only holds in
+   the dark: on the daylight theme the darkest surface is ink, and dimming a
+   pale page with more pale dims nothing. So the colour and the amount of it
+   are both their own tokens now. */
+.nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  background: var(--scrim);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
+}
+
+.nav-drawer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 43;
+  width: min(16rem, 78vw);
+  padding: calc(3.6rem + env(safe-area-inset-top, 0px)) 0.8rem 1.4rem;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* visibility, not [hidden]: a hidden element cannot transition, and the
+     drawer must not be reachable by Tab while it is off-screen. `inert` on the
+     element carries the semantics; this carries the paint. */
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: transform 0.18s ease-out, visibility 0s linear 0.18s;
+}
+
+#table-nav.open .nav-scrim {
+  opacity: var(--scrim-opacity);
+  visibility: visible;
+  transition: opacity 0.18s ease;
+}
+#table-nav.open .nav-drawer {
+  visibility: visible;
+  transform: none;
+  transition: transform 0.18s ease-out;
+}
+
+/* The creature's name, and the way back to it. */
+.nav-home {
+  color: var(--text-bright);
+  text-decoration: none;
+  font-size: 1.05rem;
+  padding: 0.3rem 0.6rem 0.7rem;
+}
+.nav-home:hover { color: var(--text); }
+.nav-home.active { color: var(--text-soft); font-style: italic; }
+
+.nav-group {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 0.9rem 0.6rem 0.35rem;
+}
+
+.nav-tab {
+  display: block;
+  color: var(--text-mute);
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+}
+.nav-tab:hover { color: var(--text-bright); background: var(--surface-lift); }
+.nav-tab.active {
+  color: var(--text-bright);
+  background: var(--surface-lift);
+  border-left-color: var(--accent);
+}
+
+/* The way out of this table entirely. Sits under a rule at the bottom because
+   it leaves, and everything above it stays. */
+.nav-out {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-soft);
+}
+.nav-out a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; padding: 0 0.6rem; }
+.nav-out a:hover { color: var(--text); }
+
+/* ===== Docked =====
+ *
+ * On a screen with room for it, the drawer stops being a drawer. It is the
+ * same element in the same place -- it was already `position: fixed` down the
+ * left edge -- so docking it is a matter of leaving it open and having the
+ * page stand out of its way rather than under it.
+ *
+ * Nothing here moves the creature: .with-rail is a document-page class, and
+ * the stage does not wear it.
+ *
+ * The width is spent twice, once as the drawer's own and once as the room the
+ * page holds for it, and they must agree exactly or the sidebar overlaps the
+ * first column of text. That is what --rail is for.
+ *
+ * The toggle and the scrim are `display: none` rather than hidden by opacity:
+ * a docked sidebar has nothing to toggle and nothing to dim, and a control
+ * that is only invisible is still in the tab order. nav.js keeps the drawer's
+ * `inert` in step with this query -- an inert sidebar is a sidebar you cannot
+ * click, which is the one way this could fail silently. */
+@media (min-width: 60rem) {
+  body.with-rail { padding-left: var(--rail); }
+
+  body.with-rail .nav-toggle,
+  body.with-rail .nav-scrim { display: none; }
+
+  /* The header's reservation goes back to the page's own gutter: there is no
+     longer a button in that corner to hold room for. */
+  body.with-rail > header { padding-left: 1rem; }
+
+  body.with-rail .nav-drawer {
+    width: var(--rail);
+    /* No toggle above it any more, so the drawer stops holding room for one. */
+    padding-top: calc(1.1rem + env(safe-area-inset-top, 0px));
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+}

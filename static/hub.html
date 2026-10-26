@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title id="page-title">The table</title>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/button.css">
+<link rel="stylesheet" href="/field.css">
+<link rel="stylesheet" href="/nav.css">
+<link rel="stylesheet" href="/timeline.css">
+<link rel="stylesheet" href="/cast.css">
+<link rel="stylesheet" href="/hub.css">
+<script src="/theme.js"></script>
+</head>
+<body class="with-rail">
+
+<nav id="table-nav"></nav>
+
+<header>
+  <h1 id="heading">The table</h1>
+</header>
+
+<main>
+  <div id="status"></div>
+
+  <!-- One panel per tab in the drawer. Hash-switched rather than five pages:
+       they all read the same /config and /party, and a page each would mean a
+       boot sequence each. -->
+
+  <section id="campaign" class="panel">
+    <dl id="at-a-glance" class="glance"></dl>
+
+    <section class="block">
+      <h2>The campaign</h2>
+      <p class="note" id="campaign-note"></p>
+      <div id="campaign-fields"></div>
+      <div id="campaign-actions" class="row" hidden>
+        <button id="campaign-save" type="button">Save the notes</button>
+        <span id="campaign-status" class="note"></span>
+      </div>
+    </section>
+  </section>
+
+  <section id="characters" class="panel" hidden>
+    <section class="block">
+      <h2>The party</h2>
+      <ul id="party-list" class="card-list"></ul>
+      <div id="party-add" hidden>
+        <button id="party-add-btn" class="secondary" type="button">Add a character</button>
+      </div>
+    </section>
+  </section>
+
+  <section id="stats" class="panel" hidden>
+    <section class="block">
+      <h2>Dice</h2>
+      <p class="note">What the party has rolled, across every session.</p>
+      <!-- The scroll box is what gets hidden, not the table: an empty
+           rounded border with nothing in it is still a box on the page. -->
+      <div id="stats-scroll" class="table-scroll" hidden>
+        <table id="stats-table">
+          <thead>
+            <tr>
+              <th>Character</th><th>Success</th><th>Failure</th><th>Crit</th><th>Nat 1</th>
+            </tr>
+          </thead>
+          <tbody id="stats-body"></tbody>
+        </table>
+      </div>
+      <p class="note" id="stats-note"></p>
+      <div id="unplaced" hidden></div>
+    </section>
+  </section>
+
+  <section id="familiar" class="panel" hidden>
+    <div id="familiar-body">
+      <p class="note">Loading…</p>
+    </div>
+  </section>
+
+  <section id="running" class="panel" hidden>
+    <div id="running-body">
+      <p class="note">Loading…</p>
+    </div>
+  </section>
+
+</main>
+
+<script src="/table.js"></script>
+<script src="/nav.js"></script>
+<!-- Order matters: hub.js runs init() as it parses, so every panel
+     file it calls into has to have executed already. -->
+<script src="/usage-view.js"></script>
+<script src="/hub-party.js"></script>
+<script src="/hub-stats.js"></script>
+<script src="/hub-familiar.js"></script>
+<script src="/hub-running.js"></script>
+<script src="/hub.js"></script>
+</body>
+</html>

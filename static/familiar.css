@@ -1,0 +1,271 @@
+/* ===== The familiar — body styling & state animations ===== */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+/* The scroll gutter. Past the top or bottom of the document the browser
+   paints the root element, not the body, so the body's gradient does not
+   reach the rubber-band overscroll -- it came out white. Two declarations,
+   both needed: an explicit root background, and color-scheme so the UA's own
+   surfaces (that overscroll, form controls, the scrollbar) are painted the
+   same way round. Both come from tokens.css, so both follow the theme. */
+html { background: var(--bg-void); color-scheme: var(--scheme); }
+
+body {
+  background: radial-gradient(ellipse at 50% 30%, var(--bg-deep) 0%, var(--bg-void) 70%);
+  color: var(--text);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+#familiar {
+  width: min(70vmin, 480px);
+  height: auto;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+/* The daylight edge.
+ *
+ * A shell is drawn to be seen on a dark table, and the cat takes that
+ * literally: near-white fur, which reads at 14.7:1 against --bg-deep in the
+ * evening and 1.04:1 against it at noon. At that ratio the creature is not
+ * dim, it is *absent* -- what daylight leaves on the screen is the scatter of
+ * grey markings that happen to be darker than the page, floating unattached.
+ *
+ * The shell cannot fix this itself. It does not know which theme it is
+ * wearing and must not learn: a cat that read the page palette is a cat that
+ * breaks when the page changes its mind (tokens.css says so at greater
+ * length). So the edge belongs here, on the page's own side of the fence,
+ * where it costs the shell nothing and works for any creature loaded into it.
+ *
+ * The one place in the chrome that asks which theme it is in, rather than
+ * asking for a colour by name. It is a fair question here: this is not "what
+ * colour is the edge" -- the palette answers that -- but "is there an edge to
+ * draw at all", and only one of the two themes needs one.
+ *
+ * This used to be four zero-blur drop-shadows compositing into a hairline,
+ * over a fifth pass casting a soft shadow behind. It read correctly and it
+ * was ruinous. A filter re-runs over the whole element every time anything
+ * inside it moves, and something inside a familiar is always moving -- a
+ * tail, a wing, an eyelid, three z's. That is five full-surface passes, one
+ * of them a 20px blur, at the refresh rate, for as long as the tab is open.
+ *
+ * A stroke does the same job for nothing. `paint-order: stroke` lays it down
+ * *under* the fill, so only its outer half shows and the shape does not
+ * fatten; non-scaling-stroke keeps it a hairline whether the creature is
+ * filling a tablet or sitting in the hub's picker. It costs a little more
+ * work the first time the frame is rasterised and, unlike a filter, nothing
+ * at all per frame after that.
+ *
+ * What a stroke cannot do is find the silhouette by itself. drop-shadow read
+ * the alpha of everything below it; a stroke has to be told what to outline.
+ * So the shell contract grew a further clause -- the shapes that make up a
+ * creature's outline carry class="edge" -- and it means only the outline. An
+ * eye or a belly patch that picks this up gains an outline it was never drawn
+ * with, and a shape already carrying a stroke of its own will have it
+ * overwritten, which is why the stroked limbs (the spider's legs, the
+ * seahorse's body) are not in the set.
+ *
+ * The soft cast behind is gone with the filter, and there is no cheap way to
+ * have it back -- the blur was the expensive pass. What it bought was depth:
+ * without it the creature reads as a sticker pressed onto the parchment
+ * rather than something sitting on it. The hairline was always the part
+ * carrying the contrast, 8.6:1 of --text-soft against the fur, and that is
+ * untouched.
+ */
+:root[data-theme="light"] #familiar .edge {
+  stroke: var(--text-soft);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  paint-order: stroke;
+  vector-effect: non-scaling-stroke;
+}
+
+#status {
+  margin-top: 0.5rem;
+  font-size: clamp(1.1rem, 3vmin, 1.6rem);
+  font-style: italic;
+  color: var(--text-soft);
+  min-height: 2rem;
+  text-align: center;
+}
+
+#recording-indicator {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--danger);
+  text-align: center;
+}
+#recording-indicator[hidden] { display: none; }
+
+#bubble {
+  margin-top: 1rem;
+  max-width: min(80vw, 620px);
+  background: var(--surface-lift);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0.9rem 1.2rem;
+  font-size: clamp(1rem, 2.5vmin, 1.25rem);
+  line-height: 1.45;
+}
+#bubble-question { color: var(--text-dim); font-style: italic; margin-bottom: 0.4rem; }
+#bubble-answer   { color: var(--text-bright); }
+
+footer { position: fixed; bottom: 1rem; display: flex; gap: 0.6rem; }
+
+/* The stage's own three. They were outlined ghost pills, on the reasoning that
+   a creature's stage should not have furniture on it -- but the same reasoning
+   would have removed them, and they are still there, so what it actually bought
+   was three buttons that read as disabled. They are ordinary buttons now, from
+   button.css.
+ *
+ * Two of the three keep a size of their own, because a gear glyph is not a
+ * word and should not be padded like one. */
+#settings-btn { font-size: 1.1rem; padding: 0.4rem 0.7rem; }
+
+/* ---------- settings panel ---------- */
+/* The panel is fixed above the footer and grows upward, while the stage
+   deliberately cannot scroll (`body { overflow: hidden }` above -- it is a
+   canvas, not a document). So the panel has to bound and scroll itself, or
+   anything past the top of the viewport is simply unreachable, "Done"
+   included. That is not hypothetical: the familiar picker and the device-voice
+   list both grow with data, and a laptop with a dozen system voices already
+   overflows a short phone.
+
+   `vh` first, then `dvh`: on mobile Safari `vh` is the *large* viewport, which
+   under a visible toolbar is taller than the screen. Browsers without `dvh`
+   ignore the second line and keep the sane-but-imperfect first. */
+#settings {
+  position: fixed;
+  bottom: 4.2rem;
+  background: var(--surface-lift);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.1rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-width: min(320px, 85vw);
+  max-height: calc(100vh - 6rem);
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 10;
+}
+#settings[hidden] { display: none; }
+#settings h2 { font-size: 1.05rem; font-weight: normal; font-style: italic; color: var(--text-soft); }
+#settings label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem; color: var(--text-dim); }
+#settings label.checkbox-row {
+  flex-direction: row; align-items: center; gap: 0.5rem; line-height: 1.3;
+}
+#settings label.checkbox-row input { width: auto; accent-color: var(--accent); flex: none; }
+/* Full width in the drawer's column; the look itself is field.css's. */
+#settings select, #settings input[type="range"] { width: 100%; accent-color: var(--accent); }
+.settings-row { display: flex; gap: 0.6rem; }
+/* Buttons only. There used to be a .settings-link beside them -- four links
+   out to the timeline, the cast, the places and the search -- which is what a
+   drawer is for. A gear panel is for changing how something works. */
+/* Share the row evenly; everything else is button.css's business. */
+.settings-row button { flex: 1; }
+
+/* ---------- listening glow ---------- */
+#glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: min(78vmin, 540px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -55%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: 0;
+}
+body[data-state="listening"] #glow { opacity: 1; animation: glow-pulse 1.6s ease-in-out infinite; }
+@keyframes glow-pulse {
+  0%, 100% { transform: translate(-50%, -55%) scale(1); }
+  50%      { transform: translate(-50%, -55%) scale(1.07); }
+}
+
+
+/* ---------- settings group headings ---------- */
+/* The panel mixes table-wide settings (which familiar, its voice, recording)
+   with per-device ones (this screen's voice, speed, volume). They used to run
+   together as one list, which made it unclear what a change would affect. */
+.settings-group {
+  margin: 1rem 0 0.1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--line-soft);
+  padding-bottom: 0.3rem;
+}
+.settings-group:first-of-type { margin-top: 0.4rem; }
+
+
+/* ---------- what moves, and when ---------- */
+/*
+ * Two rules the shells get no say in. Both are about the cost of motion
+ * rather than the look of it, and both are stated once here rather than
+ * fifteen times over in the shells, because each is a claim about a *state*
+ * and not about any particular creature: a sixteenth shell added tomorrow
+ * should inherit them without having to know they exist.
+ *
+ * The cost is worth being explicit about, because it is not the cost the
+ * property suggests. A transform on a div is handed to the compositor and is
+ * very nearly free; the identical transform on a shape *inside* an SVG is
+ * not, because the browser rasterises SVG content into its parent's layer
+ * rather than giving it one of its own. So every frame of every animation in
+ * every shell is main-thread paint work -- and all of them are `infinite`.
+ *
+ * Asleep, that work buys nothing. The creature is a still drawing with three
+ * z's rising off it, and the z's are the whole of what anyone is meant to
+ * notice; a cat left asleep on the table for an hour was swaying its tail
+ * sixty times a second for the entire hour. So nothing moves but the sleep
+ * cue -- which reaches a good deal further than the tail, to the octopus's
+ * eight arms and the spider's eight legs.
+ *
+ * Two exceptions, because two shells sleep in water and blow bubbles instead
+ * of yawning. The bubbles have to keep their animation rather than merely
+ * losing it: it is the animation that fades them in and out, so a frozen one
+ * is not a still bubble but three of them stuck solid over the fish.
+ */
+body[data-state="asleep"] #familiar *:not(#zzz):not(.z):not(#bubbles):not(.bub) {
+  animation: none;
+}
+
+/*
+ * And a reader who has told their operating system to stop moving things has
+ * told us. Everything stops, the halo included -- reduced motion is a request
+ * for none of it, not less of it -- which leaves the creature as the drawing
+ * it is at rest, still expressive across the five states because most of what
+ * separates them (open or closed eyes, sparks, a lit halo, an open mouth) is
+ * a matter of what is visible rather than what is moving.
+ *
+ * !important, which nothing else in the chrome needs: the shells set their
+ * animations from selectors carrying an id and a state attribute, and a media
+ * query lends its contents no weight of its own to outrank that with.
+ */
+@media (prefers-reduced-motion: reduce) {
+  #familiar, #familiar *, #glow {
+    animation: none !important;
+    transition: none !important;
+  }
+}

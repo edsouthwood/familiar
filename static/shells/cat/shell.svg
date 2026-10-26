@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="familiar" viewBox="0 0 400 400" aria-label="Cat familiar">
+
+  <style>
+    /* What this creature looks like at rest.
+     *
+     * Inside the drawing rather than in shell.css beside it, because a shell
+     * has to be right opened on its own -- in an &lt;img&gt;, in a browser tab,
+     * in the shape picker on the hub -- and none of those load the stylesheet.
+     * Without it a familiar renders with its closed eyes drawn on top of its
+     * open ones, its mouth hanging open and its sleeping z's in the air.
+     *
+     * shell.css still wins wherever it has an opinion: every rule there is
+     * prefixed with body[data-state=...], which outranks a bare selector. */
+    .eyelid { transform: scaleY(0); }
+    #closed-eyes, #sparkles, #zzz, #bubbles, #tongue { opacity: 0; }
+    #mouth-open { visibility: hidden; }
+  </style>
+
+  <defs>
+    <clipPath id="head-clip"><circle cx="200" cy="150" r="88"/></clipPath>
+    <clipPath id="body-clip"><ellipse cx="200" cy="278" rx="98" ry="80"/></clipPath>
+  </defs>
+
+  <!-- tail (behind body) -->
+  <g id="tail">
+    <path class="edge" d="M 278 312
+             C 340 302, 362 252, 350 205
+             C 346 188, 328 184, 320 198
+             C 313 210, 324 220, 333 216
+             C 340 252, 320 290, 272 294 Z"
+          fill="#9aa0b0"/>
+    <ellipse cx="332" cy="204" rx="13" ry="15" fill="#f2f3f7"
+             transform="rotate(20 332 204)"/>
+  </g>
+
+  <!-- body -->
+  <ellipse class="edge" cx="200" cy="278" rx="98" ry="80" fill="#f2f3f7"/>
+  <g clip-path="url(#body-clip)">
+    <path d="M 252 205 C 305 215, 315 280, 296 335
+             C 264 305, 250 260, 252 205 Z" fill="#c2c6d1"/>
+  </g>
+
+  <!-- paws -->
+  <ellipse class="edge" cx="150" cy="342" rx="27" ry="14" fill="#f2f3f7"/>
+  <ellipse class="edge" cx="250" cy="342" rx="27" ry="14" fill="#f2f3f7"/>
+  <path d="M 143 335 v 10 M 157 335 v 10 M 243 335 v 10 M 257 335 v 10"
+        stroke="#c9cdd8" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- head -->
+  <g id="head">
+    <!-- ears -->
+    <g id="ear-left"  class="ear">
+      <path class="edge" d="M 130 94 L 110 22 L 184 60 Z" fill="#9aa0b0"/>
+      <path d="M 137 80 L 125 36 L 168 60 Z" fill="#e8aab8"/>
+    </g>
+    <g id="ear-right" class="ear">
+      <path class="edge" d="M 270 94 L 290 22 L 216 60 Z" fill="#f2f3f7"/>
+      <path d="M 263 80 L 275 36 L 232 60 Z" fill="#e8aab8"/>
+    </g>
+
+    <circle class="edge" cx="200" cy="150" r="88" fill="#f2f3f7"/>
+    <!-- grey cap over the left brow -->
+    <g clip-path="url(#head-clip)">
+      <path d="M 108 108 C 122 62, 168 52, 205 60
+               C 196 88, 162 104, 108 130 Z" fill="#c2c6d1"/>
+    </g>
+
+    <!-- eyes: big blue cat eyes -->
+    <g class="eye" id="eye-left">
+      <ellipse cx="163" cy="140" rx="18" ry="22" fill="#3f8fd6"/>
+      <g class="pupil">
+        <ellipse cx="163" cy="141" rx="6.5" ry="12" fill="#1d2a3a"/>
+        <circle cx="168" cy="133" r="4" fill="#fff"/>
+      </g>
+      <ellipse class="eyelid" cx="163" cy="140" rx="20" ry="24" fill="#f2f3f7"/>
+    </g>
+    <g class="eye" id="eye-right">
+      <ellipse cx="237" cy="140" rx="18" ry="22" fill="#3f8fd6"/>
+      <g class="pupil">
+        <ellipse cx="237" cy="141" rx="6.5" ry="12" fill="#1d2a3a"/>
+        <circle cx="242" cy="133" r="4" fill="#fff"/>
+      </g>
+      <ellipse class="eyelid" cx="237" cy="140" rx="20" ry="24" fill="#f2f3f7"/>
+    </g>
+    <!-- contented closed eyes, asleep only -->
+    <g id="closed-eyes" stroke="#8a90a3" stroke-width="4.5" fill="none" stroke-linecap="round">
+      <path d="M 146 140 Q 163 152 180 140"/>
+      <path d="M 220 140 Q 237 152 254 140"/>
+    </g>
+
+    <!-- nose + mouth -->
+    <path d="M 191 180 L 209 180 L 200 192 Z" fill="#e8aab8"/>
+    <path id="mouth-closed" d="M 200 192 Q 194 204 183 199 M 200 192 Q 206 204 217 199"
+          stroke="#8a90a3" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse id="mouth-open" cx="200" cy="203" rx="13" ry="9" fill="#a34a5c"/>
+
+    <!-- whiskers -->
+    <g class="whiskers" id="whiskers-left" stroke="#c9cdd8" stroke-width="3" stroke-linecap="round">
+      <path d="M 150 180 L 92 170"/>
+      <path d="M 150 190 L 88 190"/>
+      <path d="M 150 200 L 94 210"/>
+    </g>
+    <g class="whiskers" id="whiskers-right" stroke="#c9cdd8" stroke-width="3" stroke-linecap="round">
+      <path d="M 250 180 L 308 170"/>
+      <path d="M 250 190 L 312 190"/>
+      <path d="M 250 200 L 306 210"/>
+    </g>
+  </g>
+
+  <!-- thinking sparkles -->
+  <g id="sparkles" fill="#ffd97a">
+    <path class="spark s1" d="M 320 70 l 4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z"/>
+    <path class="spark s2" d="M 350 110 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+    <path class="spark s3" d="M 296 42 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+  </g>
+
+  <!-- zzz when asleep -->
+  <g id="zzz" fill="#b592ff" font-family="Georgia, serif" font-weight="bold">
+    <text class="z z1" x="290" y="90"  font-size="34">z</text>
+    <text class="z z2" x="316" y="62"  font-size="26">z</text>
+    <text class="z z3" x="338" y="40"  font-size="19">z</text>
+  </g>
+</svg>

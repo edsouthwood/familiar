@@ -1,0 +1,86 @@
+/* The lamp: one button, on every surface the site has.
+ *
+ * One component, one stylesheet -- the same rule nav.css keeps, and for the
+ * same reason. The navigation strip that came before the drawer was styled in
+ * two sheets that no single page was obliged to load together, so it painted
+ * differently on four pages and not at all on the fifth.
+ *
+ * Deliberately fixed rather than in the flow. The familiar's stage centres a
+ * creature with a flex body (familiar.css) and anything in that flow, down to
+ * a padding on the body, moves the creature and drags its listening glow off
+ * centre with it. The one page that wants it in the flow says so by providing
+ * a #theme-slot, and gets .in-slot below.
+ *
+ * Palette from tokens.css; nothing here defines its own colours -- which is
+ * the joke, really, since it is the control that changes them.
+ */
+
+.theme-toggle {
+  position: fixed;
+  /* Under the navigation (z-index 40-43) on purpose: when the drawer is open
+     its scrim should cover the lamp along with the rest of the page, and the
+     one control that stays lit above a scrim is the one that closes it. */
+  z-index: 35;
+  top: calc(0.7rem + env(safe-area-inset-top, 0px));
+  right: calc(0.7rem + env(safe-area-inset-right, 0px));
+  width: 2.4rem;
+  height: 2.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  color: var(--text-soft);
+  cursor: pointer;
+  padding: 0;
+}
+.theme-toggle:hover { background: var(--chip); color: var(--text-bright); }
+
+/* Room for it, in the one place a page puts something under it.
+ *
+ * The document pages hold 3.6rem clear down their left edge for the navigation
+ * toggle (.with-rail, nav.css). The mirror of that on the right would cost
+ * every one of them another 3.6rem of column, which on a phone is most of a
+ * word per line -- and nothing on those pages reaches the top-right corner
+ * except the heading, which is set from the familiar's name and is exactly
+ * long enough to get there. So the reservation is made on the header alone,
+ * and the list below it keeps its full width.
+ *
+ * Specificity, not order: this sheet is loaded before the page's own, and the
+ * `padding` shorthand in timeline.css would otherwise win. */
+body.with-rail > header { padding-right: 3.4rem; }
+
+/* In a page's own header row instead of the corner. Smaller, borderless and
+   sitting on whatever is behind it: it is one item in a line of links there,
+   not a control floating over the page. */
+.theme-toggle.in-slot {
+  position: static;
+  width: 1.9rem;
+  height: 1.9rem;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-dim);
+}
+.theme-toggle.in-slot:hover { background: none; color: var(--text); }
+
+/* Stroked, not filled, so both icons weigh the same at 1.15rem -- a filled
+   moon next to a spoked sun reads as two different button sizes. */
+.theme-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The button offers the destination, not the current state: a sun while the
+   table is dark. Keyed off the attribute in both directions rather than left
+   to a default, because theme.js stamps <html> before the body is parsed and
+   an unthemed page is a state that should not exist. */
+:root[data-theme="dark"] .theme-icon-sun { display: block; }
+:root[data-theme="light"] .theme-icon-moon { display: block; }

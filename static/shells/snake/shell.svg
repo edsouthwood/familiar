@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="familiar" viewBox="0 0 400 400" aria-label="Snake familiar">
+
+  <style>
+    /* What this creature looks like at rest.
+     *
+     * Inside the drawing rather than in shell.css beside it, because a shell
+     * has to be right opened on its own -- in an &lt;img&gt;, in a browser tab,
+     * in the shape picker on the hub -- and none of those load the stylesheet.
+     * Without it a familiar renders with its closed eyes drawn on top of its
+     * open ones, its mouth hanging open and its sleeping z's in the air.
+     *
+     * shell.css still wins wherever it has an opinion: every rule there is
+     * prefixed with body[data-state=...], which outranks a bare selector. */
+    .eyelid { transform: scaleY(0); }
+    #closed-eyes, #sparkles, #zzz, #bubbles, #tongue { opacity: 0; }
+    #mouth-open { visibility: hidden; }
+  </style>
+
+  <g id="coil">
+    <path class="edge" d="M 200 372 C 96 372, 44 330, 44 288 C 44 244, 104 216, 200 216
+             C 296 216, 356 244, 356 288 C 356 330, 304 372, 200 372 Z"
+          fill="#3f9e7a"/>
+    <path d="M 200 356 C 116 356, 70 326, 70 292 C 70 258, 122 236, 200 236
+             C 278 236, 330 258, 330 292 C 330 326, 284 356, 200 356 Z"
+          fill="#5ec098"/>
+    <g fill="#2f7a5e" opacity="0.75">
+      <path d="M 116 300 l 16 -14 16 14 -16 14 Z"/>
+      <path d="M 168 314 l 16 -14 16 14 -16 14 Z"/>
+      <path d="M 220 314 l 16 -14 16 14 -16 14 Z"/>
+      <path d="M 272 300 l 16 -14 16 14 -16 14 Z"/>
+    </g>
+  </g>
+
+  <g id="head">
+    <path class="edge" d="M 200 92 C 246 92, 276 122, 276 160 C 276 200, 246 226, 200 226
+             C 154 226, 124 200, 124 160 C 124 122, 154 92, 200 92 Z"
+          fill="#4fb08a"/>
+    <path d="M 200 108 C 234 108, 256 128, 258 154 C 236 142, 218 138, 200 138
+             C 182 138, 164 142, 142 154 C 144 128, 166 108, 200 108 Z"
+          fill="#7fd4ae"/>
+  <g class="eye" id="eye-left">
+    <circle cx="166" cy="158" r="22" fill="#ffffff"/>
+    <circle cx="166" cy="158" r="15" fill="#e8b830"/>
+    <g class="pupil">
+      <ellipse cx="166" cy="158" rx="6" ry="6" fill="#1a2418"/>
+      <circle cx="169" cy="154" r="3" fill="#fff"/>
+    </g>
+    <circle class="eyelid" cx="166" cy="158" r="23" fill="#4fb08a"/>
+  </g>
+  <g class="eye" id="eye-right">
+    <circle cx="234" cy="158" r="22" fill="#ffffff"/>
+    <circle cx="234" cy="158" r="15" fill="#e8b830"/>
+    <g class="pupil">
+      <ellipse cx="234" cy="158" rx="6" ry="6" fill="#1a2418"/>
+      <circle cx="237" cy="154" r="3" fill="#fff"/>
+    </g>
+    <circle class="eyelid" cx="234" cy="158" r="23" fill="#4fb08a"/>
+  </g>
+  <g id="closed-eyes" stroke="#2f7a5e" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M 144 158 Q 166 171 188 158"/>
+    <path d="M 212 158 Q 234 171 256 158"/>
+  </g>
+    <g fill="#2f7a5e">
+      <circle cx="188" cy="200" r="4"/><circle cx="212" cy="200" r="4"/>
+    </g>
+    <g id="mouth-closed" stroke="#2f7a5e" stroke-width="4" fill="none"
+       stroke-linecap="round">
+      <path d="M 178 212 Q 200 222 222 212"/>
+    </g>
+    <g id="mouth-open">
+      <path d="M 176 208 Q 200 246 224 208 Z" fill="#7a2f46"/>
+      <path d="M 186 212 l 6 0 l -3 12 Z" fill="#fff"/>
+      <path d="M 214 212 l -6 0 l 3 12 Z" fill="#fff"/>
+    </g>
+    <g id="tongue">
+      <path d="M 200 224 L 200 258 M 200 258 L 190 272 M 200 258 L 210 272"
+            stroke="#e0607a" stroke-width="5" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <g id="sparkles" fill="#ffd97a">
+    <path class="spark s1" d="M 322 74 l 4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 Z"/>
+    <path class="spark s2" d="M 352 114 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+    <path class="spark s3" d="M 298 46 l 3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z"/>
+  </g>
+
+  <g id="zzz" fill="#b592ff" font-family="Georgia, serif" font-weight="bold">
+    <text class="z z1" x="296" y="96"  font-size="34">z</text>
+    <text class="z z2" x="322" y="68"  font-size="26">z</text>
+    <text class="z z3" x="344" y="46"  font-size="19">z</text>
+  </g>
+</svg>

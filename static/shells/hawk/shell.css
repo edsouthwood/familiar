@@ -1,0 +1,101 @@
+/* ===== Hawk shell — state animations =====
+ *
+ * The brow is the whole expression. Everything else it borrows from the owl's
+ * posture, and then it looks cross about something.
+ *
+ * A shell owns its own appearance and reads none of the page palette:
+ * a creature has to render the same dropped into any page. Contract:
+ *   - the SVG root is #familiar, with a viewBox
+ *   - animations key off
+ *     body[data-state="asleep|idle|listening|thinking|speaking"]
+ *   - the shapes that make up its outline carry class="edge", which the
+ *     daylight theme strokes so a pale creature has an edge on parchment
+ */
+
+/* ---------- blinking (all awake states) ---------- */
+.eyelid {
+  transform-box: fill-box;
+  transform-origin: center top;
+  transform: scaleY(0);
+  animation: blink 5.0s infinite;
+}
+#eye-right .eyelid { animation-delay: 0.07s; }
+@keyframes blink {
+  0%, 94%, 100% { transform: scaleY(0); }
+  96%, 98%      { transform: scaleY(1); }
+}
+
+/* asleep: lids down, contented arcs, no blinking */
+body[data-state="asleep"] .eyelid { animation: none; transform: scaleY(1); }
+#closed-eyes { opacity: 0; }
+body[data-state="asleep"] #closed-eyes { opacity: 1; }
+
+/* ---------- pupils ---------- */
+.pupil {
+  transition: transform 0.3s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+body[data-state="thinking"]  .pupil { transform: translate(5px, -7px); }
+body[data-state="listening"] .pupil { transform: translate(0, -3px) scale(1.15); }
+
+/* ---------- mouth ---------- */
+#mouth-open { visibility: hidden; }
+body[data-state="speaking"] #mouth-open {
+  visibility: visible;
+  transform-box: view-box;
+  transform-origin: 200px 194px;
+  animation: mouth-flap 0.24s ease-in-out infinite alternate;
+}
+body[data-state="speaking"] #mouth-closed { visibility: hidden; }
+@keyframes mouth-flap {
+  from { transform: scaleY(0.25); }
+  to   { transform: scaleY(1); }
+}
+
+/* ---------- thinking sparkles ---------- */
+#sparkles { opacity: 0; }
+body[data-state="thinking"] #sparkles { opacity: 1; }
+body[data-state="thinking"] .spark { animation: twinkle 1.1s ease-in-out infinite; }
+.spark.s2 { animation-delay: 0.35s !important; }
+.spark.s3 { animation-delay: 0.7s !important; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1.1); }
+}
+.spark { transform-box: fill-box; transform-origin: center; }
+
+/* ---------- zzz when asleep ---------- */
+#zzz { opacity: 0; }
+body[data-state="asleep"] #zzz { opacity: 1; }
+body[data-state="asleep"] .z { animation: float-z 3s ease-in-out infinite; }
+.z.z2 { animation-delay: 1s !important; }
+.z.z3 { animation-delay: 2s !important; }
+@keyframes float-z {
+  0%   { opacity: 0; transform: translateY(6px); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ---------- the glare ---------- */
+#brow { transform-box: fill-box; transform-origin: center bottom; transition: transform 0.3s ease-out; }
+body[data-state="listening"] #brow { transform: translateY(-6px) scaleY(0.8); }
+body[data-state="thinking"]  #brow { transform: translateY(3px) scaleY(1.15); }
+body[data-state="asleep"]    #brow { transform: translateY(9px); }
+
+/* ---------- head, and the wings it settles ---------- */
+#head { transform-box: fill-box; transform-origin: center bottom; transition: transform 0.35s ease-out; }
+body[data-state="listening"] #head { transform: rotate(-6deg); }
+body[data-state="thinking"]  #head { animation: scan 2.2s ease-in-out infinite; }
+@keyframes scan {
+  0%, 100% { transform: rotate(-7deg); }
+  50%      { transform: rotate(7deg); }
+}
+
+.wing { transform-box: fill-box; transform-origin: top center; transition: transform 0.35s ease-out; }
+body[data-state="speaking"] .wing { animation: mantle 0.5s ease-in-out infinite alternate; }
+@keyframes mantle {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-6deg) translateY(-5px); }
+}
+body[data-state="asleep"] .wing { transform: scale(0.94) translateY(6px); }

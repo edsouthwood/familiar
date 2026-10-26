@@ -1,0 +1,127 @@
+/* ===== Owl shell — state animations =====
+ *
+ * The second shell, and the proof that the contract holds: it shares no element
+ * ids with the cat beyond the SVG root, has no tail-wag or whisker-twitch, and
+ * expresses the same five states its own way — a head tilt where the cat wags,
+ * a beak where the cat has a mouth.
+ *
+ * Contract:
+ *   - the SVG root is #familiar, with a viewBox
+ *   - animations key off body[data-state="asleep|idle|listening|thinking|speaking"]
+ *   - the shapes that make up its outline carry class="edge", which the
+ *     daylight theme strokes so a pale creature has an edge on parchment
+ */
+
+/* ---------- blinking (all awake states) ---------- */
+/* Owls blink slowly and deliberately, so this is longer than the cat's. */
+.eyelid {
+  transform-box: fill-box;
+  transform-origin: center top;
+  transform: scaleY(0);
+  animation: blink 5.4s infinite;
+}
+#eye-right .eyelid { animation-delay: 0.08s; }
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(0); }
+  95%, 97%      { transform: scaleY(1); }
+}
+
+/* asleep: lids down, contented arcs, no blinking */
+body[data-state="asleep"] .eyelid { animation: none; transform: scaleY(1); }
+#closed-eyes { opacity: 0; }
+body[data-state="asleep"] #closed-eyes { opacity: 1; }
+
+/* ---------- head tilt: the owl's tell ---------- */
+#head {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transition: transform 0.35s ease-out;
+}
+body[data-state="thinking"] #head { animation: head-tilt 1.8s ease-in-out infinite; }
+body[data-state="listening"] #head { transform: rotate(-5deg); }
+@keyframes head-tilt {
+  0%, 100% { transform: rotate(-11deg); }
+  50%      { transform: rotate(9deg); }
+}
+
+/* ---------- ear tufts perk when listening ---------- */
+.tuft { transition: transform 0.25s ease-out; }
+#tuft-left  { transform-box: view-box; transform-origin: 150px 92px; }
+#tuft-right { transform-box: view-box; transform-origin: 250px 92px; }
+body[data-state="listening"] #tuft-left  { transform: rotate(-10deg) translateY(-8px); }
+body[data-state="listening"] #tuft-right { transform: rotate(10deg)  translateY(-8px); }
+
+/* ---------- pupils ---------- */
+.pupil {
+  transition: transform 0.3s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+body[data-state="thinking"]  .pupil { transform: translate(4px, -8px); }
+body[data-state="listening"] .pupil { transform: scale(1.25); }
+
+/* ---------- beak ---------- */
+#beak-open { visibility: hidden; }
+body[data-state="speaking"] #beak-open {
+  visibility: visible;
+  transform-box: fill-box;
+  transform-origin: center top;
+  animation: beak-flap 0.26s ease-in-out infinite alternate;
+}
+body[data-state="speaking"] #beak-closed { visibility: hidden; }
+@keyframes beak-flap {
+  from { transform: scaleY(0.3); }
+  to   { transform: scaleY(1); }
+}
+
+/* ---------- wings ---------- */
+/* A slow breathing settle when idle; a small mantle when speaking. */
+.wing { transform-box: fill-box; transition: transform 0.4s ease-out; }
+#wing-left  { transform-origin: right top; animation: wing-breathe 5s ease-in-out infinite; }
+#wing-right { transform-origin: left top;  animation: wing-breathe 5s ease-in-out infinite; }
+@keyframes wing-breathe {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(1.2deg); }
+}
+body[data-state="asleep"] .wing { animation-duration: 9s; }
+body[data-state="speaking"] #wing-left  { transform: rotate(-4deg) translateX(-3px); }
+body[data-state="speaking"] #wing-right { transform: rotate(4deg)  translateX(3px); }
+
+/* ---------- talons grip when listening ---------- */
+#talons { transition: transform 0.3s ease-out; transform-box: fill-box; transform-origin: center top; }
+body[data-state="listening"] #talons { transform: scaleY(0.86); }
+
+/* ---------- tail ---------- */
+#tail {
+  transform-box: view-box;
+  transform-origin: 200px 300px;
+  animation: tail-settle 6s ease-in-out infinite;
+}
+@keyframes tail-settle {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+
+/* ---------- thinking sparkles ---------- */
+#sparkles { opacity: 0; }
+body[data-state="thinking"] #sparkles { opacity: 1; }
+body[data-state="thinking"] .spark { animation: twinkle 1.1s ease-in-out infinite; }
+.spark.s2 { animation-delay: 0.35s !important; }
+.spark.s3 { animation-delay: 0.7s !important; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1.1); }
+}
+.spark { transform-box: fill-box; transform-origin: center; }
+
+/* ---------- zzz when asleep ---------- */
+#zzz { opacity: 0; }
+body[data-state="asleep"] #zzz { opacity: 1; }
+body[data-state="asleep"] .z { animation: float-z 3s ease-in-out infinite; }
+.z.z2 { animation-delay: 1s !important; }
+.z.z3 { animation-delay: 2s !important; }
+@keyframes float-z {
+  0%   { opacity: 0; transform: translateY(6px); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}

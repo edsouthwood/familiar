@@ -1,0 +1,90 @@
+/* ===== Buttons =====
+ *
+ * One look, everywhere something is pressed.
+ *
+ * There were six. The reprocess button on the timeline; the amend form's Save
+ * and Cancel; the doorway pages' own bare `button` rule; the three pills in the
+ * stage's footer; the settings drawer's row; and the search page's filter tabs.
+ * Five stylesheets, four font sizes, four paddings, three radii, and three
+ * different answers to whether a button has a border or a fill. None of them
+ * was wrong on the page it lived on -- which is exactly how it happened, one
+ * reasonable local decision at a time -- but together they made one app look
+ * like several that had been glued at the edges.
+ *
+ * The one that won is "Apply corrections to memory": filled with --control, no
+ * visible border, and small enough to stand in a line of text without shouting
+ * at it.
+ *
+ * Its own sheet, loaded by every page, for the reason nav.css and theme.css
+ * have theirs. A component split across stylesheets that no single page is
+ * obliged to load together is a component that paints differently depending on
+ * where in the app you happen to meet it, and this one had drifted furthest of
+ * anything here.
+ *
+ * Palette from tokens.css; nothing here defines its own colours.
+ */
+
+/* `button` bare, and `.btn` for the handful of things that are anchors because
+   they navigate -- a call to action that is a link, made a <button> to get
+   the look, would be lying to a screen reader about what
+   pressing it does. */
+button,
+.btn {
+  background: var(--control);
+  /* Not --text. A filled button inverts against its page (see tokens.css), so
+     the label has to invert with it -- --text on this fill is 1.4:1. */
+  color: var(--on-control);
+  /* Transparent rather than absent, so .secondary can put a line in without
+     the button changing size when it does. */
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover,
+.btn:hover { background: var(--control-hover); color: var(--on-control); }
+
+/* Keyboard focus, said once for every button in the app. Two of these
+   stylesheets had it and four did not, which is the same drift as the padding
+   but the kind that loses somebody the ability to use the page at all. */
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+/* Or the fill still answers a pointer that cannot do anything. */
+button:disabled:hover { background: var(--control); color: var(--on-control); }
+
+/* The quieter half of a pair: Cancel beside Save, Dismiss beside Bind.
+ *
+ * An outline rather than a second fill. Two filled buttons side by side is two
+ * buttons with equal claim on the press, and one of these is nearly always the
+ * one you did not come here to do. */
+button.secondary,
+.btn.secondary {
+  background: transparent;
+  /* --edge, not --line: with no fill behind it the border is the entire
+     control, so it is the thing that has to clear 3:1. See tokens.css. */
+  border-color: var(--edge);
+  color: var(--text-mute);
+}
+button.secondary:hover,
+.btn.secondary:hover { background: var(--control); color: var(--on-control); }
+
+/* Big enough to be the reason a page exists. The same button, further away. */
+.btn-lg {
+  border-radius: 12px;
+  padding: 0.75rem 1.6rem;
+  font-size: 1.05rem;
+}

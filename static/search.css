@@ -1,0 +1,62 @@
+/* Search page -- layered on timeline.css and cast.css. Palette from tokens.css. */
+
+#search-form { margin-bottom: 0.2rem; }
+
+/* The one control this page exists for, so it is bigger than a field
+   elsewhere and says so. Colour, border and focus come from field.css; only
+   the size is its own. */
+#q {
+  width: 100%;
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+}
+
+#filters { margin-bottom: 0.2rem; flex-wrap: wrap; }
+
+.result-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Which kind of thing this is. Deliberately quiet -- the snippet is what
+   somebody is reading, and four coloured badges down the page would fight it. */
+.kind-badge {
+  background: var(--chip);
+  /* --text-dim was 3.18:1 on this wash -- quiet to the point of failing the
+     4.5:1 a 0.75rem label needs. --text-mute is the next step up and still
+     reads as a tag rather than a heading. */
+  color: var(--text-mute);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.result-title {
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.result-date {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
+.result-snippet { color: var(--text-bright); }
+
+.result-snippet mark {
+  background: var(--mark-bg);
+  color: var(--mark-text);
+  border-radius: 3px;
+  padding: 0 0.15em;
+}
+
+.card-list li a.result-link {
+  color: var(--accent);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.card-list li a.result-link:hover { text-decoration: underline; }

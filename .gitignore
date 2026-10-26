@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Downloaded Piper voices (setup.sh fetches them).
+voices/
+# Everything every table accumulates, plus the accounts database. One directory
+# so a backup is one directory -- and so your campaigns, and what the familiar
+# overheard, never end up in a fork.
+data/

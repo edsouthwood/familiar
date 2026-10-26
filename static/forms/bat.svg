@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-labelledby="t">
+<title id="t">Bat</title>
+<!-- One of the fifteen forms the find familiar spell allows. See
+     static/forms/README.md for the collection and how to put one on a page.
+     Stroked in currentColor: inlined in a document it takes the colour of the
+     text around it, and used as a CSS mask it takes whatever is painted
+     behind it. -->
+<style>
+  path, circle { fill: none; stroke: currentColor; stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+</style>
+  <g id="f-bat">
+    <path d="M32 21 C35 21 37 23 37 26 C38 28 38 30 37 32 C37 40 35 46 32 49"/>
+    <path d="M35 22 C34 18 36 15 38 14 C39 18 38 21 37 24"/>
+    <path d="M37 29 C43 23 51 19 59 20 C57 24 56 27 57 31 C54 29 51 29 49 31 C47 29 45 29 43 31 C41 30 39 32 38 33"/>
+  </g>
+  <use href="#f-bat" transform="translate(64,0) scale(-1,1)"/>
+</svg>

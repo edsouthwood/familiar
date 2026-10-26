@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-labelledby="t">
+<title id="t">Owl</title>
+<!-- One of the fifteen forms the find familiar spell allows. See
+     static/forms/README.md for the collection and how to put one on a page.
+     Stroked in currentColor: inlined in a document it takes the colour of the
+     text around it, and used as a CSS mask it takes whatever is painted
+     behind it. -->
+<style>
+  path, circle { fill: none; stroke: currentColor; stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+</style>
+  <g id="f-owl">
+    <path d="M32 15 C37 15 41 18 44 22"/>
+    <path d="M41 18 L46 11 L45 21"/>
+    <path d="M44 22 C48 26 49 31 49 37 C49 47 42 53 32 53"/>
+    <circle cx="39" cy="28" r="5"/>
+    <circle cx="39" cy="28" r="1.8"/>
+    <path d="M32 31 L35 36 L32 38"/>
+    <path d="M46 33 C46 41 43 47 39 50"/>
+    <path d="M37 53 L37 57"/>
+    <path d="M34 57 L41 57"/>
+  </g>
+  <use href="#f-owl" transform="translate(64,0) scale(-1,1)"/>
+</svg>

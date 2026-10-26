@@ -1,0 +1,16 @@
+# Nightly, after the last plausible game night has ended.
+[Unit]
+Description=Run the familiar's backup every night
+
+[Timer]
+# 03:20 local time. The odd minute is deliberate: object storage endpoints are
+# busiest on the hour, and nothing here needs to be first in the queue.
+OnCalendar=*-*-* 03:20:00
+# Spread over 20 minutes so several deployments do not all fire together.
+RandomizedDelaySec=1200
+# If the box was asleep or off at 03:20, run as soon as it is back. A missed
+# night is the normal way a backup regime quietly stops existing.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

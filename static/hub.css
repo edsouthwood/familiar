@@ -1,0 +1,429 @@
+/* The table's own page -- layered on timeline.css and cast.css, which already
+   carry the card list, the tab buttons and the amend-form look.
+   Palette from tokens.css; nothing here defines its own colours. */
+
+/* The navigation used to live here, half of it, with the other half in
+   cast.css -- which the timeline never loaded, so its strip painted as bare
+   blue links. It is one component now and it has its own sheet: nav.css,
+   loaded by every page that has a <nav id="table-nav">, the stage included. */
+
+/* ---------- panels ---------- */
+
+.panel[hidden] { display: none; }
+
+.block {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.panel > .block:first-child { margin-top: 0; }
+
+.block > h2, .block > h3 {
+  font-size: 1.05rem;
+  font-weight: normal;
+  font-style: italic;
+  color: var(--text-soft);
+}
+
+/* ---------- at a glance ----------
+ *
+ * This was a two-column grid inside one bordered box: label, value, label,
+ * value, all of it the same size, the numbers no louder than the words naming
+ * them. It is the first thing on the first panel of the page and it read as a
+ * receipt.
+ *
+ * Tiles instead, one per fact, auto-fitting to however many will go across the
+ * column. The label is the quiet half now -- small, uppercase, tracked -- and
+ * the value is what the eye lands on, which is the right way round for a thing
+ * called "at a glance". Each pair is wrapped in a <div class="stat"> by
+ * loadGlance(); a <dl> is allowed to contain those.
+ *
+ * `auto-fit` rather than a fixed count: the row holds anywhere from two facts
+ * to six depending on what the table has recorded, and a fixed three-column
+ * grid would leave a hole in it on a table with four. */
+.glance {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.stat {
+  background: var(--surface-lift);
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.glance dt {
+  color: var(--text-dim);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Big enough to be the thing you read, small enough that a familiar's name or
+   a session date does not wrap to three lines in an 8.5rem tile. Tabular
+   figures because half of these are counts sitting in a row together. */
+.glance dd {
+  color: var(--text-bright);
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- pills ----------
+ *
+ * A state, drawn as one: "bound", "DM", "player". They used to be either
+ * parenthesised into the middle of a name or set as a grey note beside it,
+ * which made a fact about the row look like a footnote to it.
+ *
+ * Two weights on purpose. The plain pill is a label -- true of the row, not
+ * worth crossing the page for. .pill-on is the one that matters here and now:
+ * the creature actually bound to this table, the person who actually runs it.
+ */
+.pill {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  vertical-align: 0.1em;
+}
+.pill-on {
+  border-color: transparent;
+  background: var(--chip);
+  color: var(--text-bright);
+}
+
+/* The gap is the parent's business wherever there is one: in a .row the flex
+   gap already spaces it, and a margin here would be that gap plus a bit. Only
+   a pill sitting directly after text has to space itself. */
+.entry-name .pill { margin-left: 0.5rem; }
+
+/* ---------- the creatures ----------
+ *
+ * Stroked rather than filled, and sized against the name it stands beside, so
+ * a cat and an owl weigh the same on the line -- theme.css keeps its sun and
+ * moon to the same rule and for the same reason: two icons of different
+ * visual weight read as two different controls.
+ *
+ * currentColor throughout, so the mark inherits --text-soft from .entry-name
+ * and follows the theme without knowing anything about it. */
+.familiar-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.45rem;
+  vertical-align: -0.2em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- browsing the creatures ----------
+ *
+ * Fifteen drawings, laid out to fit whatever width the card has. auto-fill
+ * rather than a fixed count: this grid sits inside a card that is one column
+ * on a phone and most of a laptop beside a docked sidebar.
+ *
+ * Each preview is an <img> of the shell's own SVG -- see shellPicker() for why
+ * that isolation matters -- so nothing in here can style the creature itself.
+ * All this owns is the frame around it. */
+.shell-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.2rem, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.shell-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 0.3rem 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text-mute);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+/* Square, and square at every width: a creature drawn in a 400x400 box that
+   gets letterboxed is a creature standing in a hole. */
+.shell-choice img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  display: block;
+}
+
+.shell-choice:hover {
+  background: var(--surface);
+  border-color: var(--edge);
+  color: var(--text-bright);
+}
+
+/* The one it is wearing. Marked with the accent rather than a tick, because
+   the drawing is what you are looking at and a tick would sit on top of it. */
+.shell-choice[aria-pressed="true"] {
+  background: var(--surface-lift);
+  border-color: var(--accent);
+  color: var(--text-bright);
+}
+
+/* ---------- disclosure buttons ----------
+ *
+ * A button that opens a panel on the same page rather than doing something.
+ * The caret is the visible half of aria-expanded; turning it is how somebody
+ * who is not using a screen reader gets told the same thing. */
+.disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.disclosure .caret {
+  width: 0.72rem;
+  height: 0.72rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.15s ease-out;
+}
+.disclosure[aria-expanded="true"] .caret { transform: rotate(90deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .disclosure .caret { transition: none; }
+}
+
+/* ---------- guidance ----------
+ *
+ * The persona box arrives pre-filled with a working persona, which sounds like
+ * it answers every question and answers none of them: it shows what a persona
+ * says without showing which parts are load-bearing. Folded away by default --
+ * somebody editing one line of a creature's voice for the fourth time does not
+ * need the manual -- and it remembers nothing, because a <details> that
+ * springs open on every visit is worse than one you have to click.
+ *
+ * Bordered and set on the raised surface so it reads as a note pinned beside
+ * the work rather than as part of the document being edited. */
+.guide {
+  background: var(--surface-lift);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+}
+
+.guide > summary {
+  cursor: pointer;
+  color: var(--text-soft);
+  font-style: italic;
+  list-style: none;
+}
+.guide > summary::-webkit-details-marker { display: none; }
+.guide > summary::before { content: "▸ "; }
+.guide[open] > summary::before { content: "▾ "; }
+.guide > summary:hover { color: var(--text-bright); }
+
+.guide dl {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.guide dt {
+  color: var(--text-bright);
+  font-size: 0.92rem;
+}
+.guide dd {
+  color: var(--text-mute);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  max-width: var(--prose);
+}
+.guide > .field-hint { margin-top: 0.75rem; }
+
+/* ---------- the campaign form ---------- */
+
+/* A box you write sentences into stops at --prose, not at --page.
+ *
+ * The column got wider so the lists and the dice table could use the screen.
+ * These must not follow it: "Where we are" stretched the full width of a
+ * laptop is a 110-character line, and prose set that wide is prose whose next
+ * line the eye cannot reliably find. Everything else on the panel still spans
+ * the column. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: var(--prose);
+}
+
+/* Label, then what the section is for, then the box. The gap above the box is
+   wider than the one holding the label to its hint, so the three read as two
+   things rather than three. */
+.field .field-hint { margin-bottom: 0.25rem; }
+
+/* The same small, tracked, uppercase label as the stat tiles above. It is the
+   same job -- naming a value without competing with it -- and there is no
+   reason for the page to have two answers to it. */
+.field-label {
+  color: var(--text-dim);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Look from field.css; the width is this panel's business.
+ *
+ * The height and the line spacing deliberately are NOT declared here any more.
+ * They used to be -- min-height 5rem, line-height 1.45 -- and both would now
+ * quietly beat textarea.prose: same specificity, and this sheet loads second,
+ * so the campaign boxes would have kept their old three-line window while the
+ * persona box grew. A box that sizes itself has one owner. */
+.field textarea, .field input[type="text"] { width: 100%; }
+
+/* What a player sees instead of a box. */
+.field-readonly {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+  color: var(--text-bright);
+  white-space: pre-wrap;
+}
+
+/* The DM-only box. Marked with a warm border rather than a red one: it is not
+   a warning, it is a different *audience*, and the distinction has to survive
+   being scrolled past every week. */
+.field.secret .field-label { color: var(--mark-text); }
+.field.secret textarea {
+  border-color: var(--mark-edge);
+  background: var(--surface-lift);
+}
+
+/* ---------- party ---------- */
+
+#party-list li.retired .entry-name { color: var(--text-dim); font-style: italic; }
+
+/* What this character sheet has room for and has not been told -- see
+   characterGapRow() in hub-party.js for why the card says so out loud.
+   Dashed, because an outline around nothing is exactly what each one is. */
+.gaps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.1rem;
+}
+
+.gaps-label {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-right: 0.1rem;
+}
+
+.gap {
+  font-family: inherit;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+  background: none;
+  border: 1px dashed var(--edge);
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+}
+
+/* Solid on hover: the chip stops being a hole and starts being a control.
+   Still no fill, though -- button.css gives every button one, and a filled
+   chip is a chip that has stopped reading as an empty slot. */
+button.gap { cursor: pointer; }
+button.gap:hover {
+  background: none;
+  color: var(--text-bright);
+  border-style: solid;
+  border-color: var(--accent);
+}
+button.gap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.card-list li .row { flex-wrap: wrap; }
+
+
+#admin summary, #admin details summary {
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+#admin > summary { font-style: italic; }
+
+/* A character who has left the party. Dimmed rather than hidden: their dice
+   history happened, and a stats table that quietly drops the dead is wrong
+   about the campaign. */
+tr.retired td { color: var(--text-dim); font-style: italic; }
+
+/* Rolls whose name matches nobody in the party -- see hub.js. Placed directly
+   under the table because the ten minutes after a party is first written is
+   when every alias gets set, and a fix-it control anywhere else would not be
+   found in time. */
+#unplaced {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+#unplaced[hidden] { display: none; }
+
+#unplaced .row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.unplaced-name { color: var(--text-bright); }
+
+
+/* A pairing code is read aloud across a table and typed into a terminal by
+   someone squinting at a phone. Big, spaced and monospaced, so O/0 and 5/S
+   confusion is the alphabet's problem (db.PAIR_ALPHABET has neither) rather
+   than the font's. */
+.pair-code {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  letter-spacing: 0.18em;
+  color: var(--text-bright);
+  margin: 0.6rem 0 0.2rem;
+}
+
+.pair-command {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  overflow-x: auto;
+  white-space: pre;
+}

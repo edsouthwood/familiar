@@ -1,0 +1,34 @@
+# One backup run: build, verify, upload, prune. Started by the timer beside it.
+#
+# Install: sudo cp deploy/familiar-backup.{service,timer} /etc/systemd/system/
+#          sudo systemctl daemon-reload
+#          sudo systemctl enable --now familiar-backup.timer
+#          systemctl list-timers familiar-backup      # when it next fires
+#          sudo systemctl start familiar-backup       # run one now
+#          journalctl -u familiar-backup -n 50        # what happened
+#
+# It does NOT stop the familiar service. The database is snapshotted through
+# sqlite's online backup API, which is designed for exactly this, and the
+# table files are read-only from here.
+[Unit]
+Description=Nightly backup of the familiar's data
+# Not After=familiar.service: a backup is most wanted on the night the service
+# is dead, so it must run whether or not the app is up.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=familiar
+WorkingDirectory=/opt/familiar
+# Reads BACKUP_DEST, BACKUP_KEEP, DATA_DIR and any AWS_* credentials from the
+# same .env the server uses, so there is one place to configure the deployment.
+EnvironmentFile=/opt/familiar/.env
+ExecStart=/opt/familiar/.venv/bin/python tools/backup.py
+# Non-zero exit means no good backup was produced -- the script verifies the
+# archive before storing it, so this is a real signal, not a transfer hiccup.
+# Point OnFailure= at a unit that tells you, once there is one.
+# OnFailure=familiar-backup-failed.service
+
+[Install]
+WantedBy=multi-user.target

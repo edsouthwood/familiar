@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-labelledby="t">
+<title id="t">Lizard</title>
+<!-- One of the fifteen forms the find familiar spell allows. See
+     static/forms/README.md for the collection and how to put one on a page.
+     Stroked in currentColor: inlined in a document it takes the colour of the
+     text around it, and used as a CSS mask it takes whatever is painted
+     behind it. -->
+<style>
+  path, circle { fill: none; stroke: currentColor; stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+</style>
+  <path d="M8 30 L14 25 C18 23 22 24 24 27 C30 26 36 27 41 29 L43 30 L41 31 C36 33 30 34 24 33 C22 36 18 37 14 35 L8 30 Z"/>
+  <path d="M42 30 C48 29 53 32 55 37 C57 42 52 46 48 43 C45 41 46 37 49 37"/>
+  <path d="M24 27 L20 21"/>
+  <path d="M20 21 L16 17"/>
+  <path d="M20 21 L15 21"/>
+  <path d="M24 32 L20 38"/>
+  <path d="M20 38 L16 42"/>
+  <path d="M20 38 L15 38"/>
+  <path d="M36 28 L34 21"/>
+  <path d="M34 21 L30 17"/>
+  <path d="M34 21 L29 20"/>
+  <path d="M36 31 L34 39"/>
+  <path d="M34 39 L30 43"/>
+  <path d="M34 39 L29 42"/>
+  <circle cx="15" cy="29" r="1.2"/>
+</svg>

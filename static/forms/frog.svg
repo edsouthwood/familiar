@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-labelledby="t">
+<title id="t">Frog (toad)</title>
+<!-- One of the fifteen forms the find familiar spell allows. See
+     static/forms/README.md for the collection and how to put one on a page.
+     Stroked in currentColor: inlined in a document it takes the colour of the
+     text around it, and used as a CSS mask it takes whatever is painted
+     behind it. -->
+<style>
+  path, circle { fill: none; stroke: currentColor; stroke-width: 2.2;
+                  stroke-linecap: round; stroke-linejoin: round; }
+</style>
+  <g id="f-frog">
+    <circle cx="39" cy="22" r="4.6"/>
+    <path d="M32 26 C34 26 36 26 37 26 C43 29 48 34 47 40 C46 45 40 48 32 48"/>
+    <path d="M32 40 C36 40 40 38 42 35"/>
+    <path d="M46 40 C51 41 55 45 52 48 C50 50 46 48 45 45"/>
+    <path d="M52 48 L57 47"/>
+    <path d="M53 45 L57 43"/>
+  </g>
+  <use href="#f-frog" transform="translate(64,0) scale(-1,1)"/>
+</svg>

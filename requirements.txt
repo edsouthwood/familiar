@@ -1,0 +1,22 @@
+# Pinned so a rebuild reproduces a known-good system. Runtime deps only; see
+# requirements-dev.txt for the test tooling and requirements-pocket.txt for the
+# heavier optional voice.
+
+Flask==3.1.3
+flask-sock==0.7.0      # /ws/state -- broadcasts the five states to every body (screens, puppet)
+gunicorn==26.0.0       # production WSGI; gthread workers, -w 1 (see deploy/familiar.service).
+                       # NB: waitress can't hijack the WebSocket connection flask-sock needs.
+requests==2.34.2
+
+# --- TTS -------------------------------------------------------------------
+# Piper: free neural TTS that runs in-process on CPU. ./setup.sh downloads a
+# voice into voices/.
+piper-tts==1.4.2
+
+# --- optional providers, not installed -------------------------------------
+# The `claude` LLM provider (set ANTHROPIC_API_KEY and LLM_PROVIDER=claude):
+# anthropic
+# The s3 backup destination (tools/backup.py). A local BACKUP_DEST needs nothing.
+# boto3
+# Uncomment to run the server with --https (self-signed, for a tablet's mic):
+# pyopenssl

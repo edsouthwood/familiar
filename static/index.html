@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Familiar</title>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/button.css">
+<link rel="stylesheet" href="/field.css">
+<link rel="stylesheet" href="/nav.css">
+<link rel="stylesheet" href="/familiar.css">
+<!-- The shell stylesheet is swapped at runtime; the href here is a starting
+     point so the common case (one familiar, the cat) paints without a round
+     trip. Preload the SVG for the same reason. -->
+<link rel="stylesheet" id="shell-css" href="/shells/cat/shell.css">
+<link rel="preload" as="fetch" href="/shells/cat/shell.svg" crossorigin>
+<script src="/theme.js"></script>
+</head>
+<body data-state="asleep">
+
+<nav id="table-nav"></nav>
+
+<main id="stage">
+
+  <div id="glow"></div>
+
+  <!-- The familiar's shell (SVG + its own stylesheet) is injected here by
+       applyFamiliar() in familiar.js, from /shells/<id>/. Which shell depends
+       on which familiar is bound, so it cannot be baked into this page. -->
+  <div id="shell"></div>
+
+  <div id="status">Tap to wake…</div>
+  <div id="recording-indicator" hidden>&#9679; recording table talk for session notes</div>
+
+  <div id="bubble" hidden>
+    <div id="bubble-question"></div>
+    <div id="bubble-answer"></div>
+  </div>
+
+</main>
+
+<footer>
+  <button id="sleep-btn" hidden>Send to sleep</button>
+  <!-- Recap is a thing the familiar *does*, not a setting: it speaks the last
+       session back to the table. It sat in the gear panel for as long as the
+       gear panel was the only surface there was, and had to hide that panel
+       from inside its own handler to get out of the way of the speech bubble. -->
+  <button id="recap-btn" hidden title="Recap last session">Recap</button>
+  <button id="settings-btn" title="Settings">&#9881;</button>
+</footer>
+
+<div id="settings" hidden>
+  <h2 id="settings-title">Settings</h2>
+
+  <!-- Settings the whole table shares: which familiar is bound, how it sounds
+       to everyone, and whether the room is being recorded. -->
+  <p class="settings-group">This familiar</p>
+  <label id="familiar-row" hidden>Bound familiar
+    <select id="familiar-select"></select>
+  </label>
+  <label class="checkbox-row">
+    <input type="checkbox" id="server-voice">
+    <span id="server-voice-label">Use its own voice (falls back to a device voice below)</span>
+  </label>
+  <label id="server-voice-picker-row" hidden>Its voice
+    <select id="server-voice-select"></select>
+  </label>
+  <label class="checkbox-row">
+    <input type="checkbox" id="meow-toggle">
+    <span>Make a noise while thinking and after answering</span>
+  </label>
+  <label class="checkbox-row">
+    <input type="checkbox" id="ambient-toggle">
+    <span>Record table talk for session notes (sends ambient speech to the server)</span>
+  </label>
+
+  <!-- Settings that belong to this screen only, not to the familiar: another
+       player's tablet has its own. -->
+  <p class="settings-group">This device</p>
+  <label>Device voice
+    <select id="voice-select"></select>
+  </label>
+  <label>Speed <span id="rate-val"></span>
+    <input type="range" id="rate" min="0.6" max="1.4" step="0.02">
+  </label>
+  <label>Pitch <span id="pitch-val"></span>
+    <input type="range" id="pitch" min="0.4" max="1.6" step="0.05">
+  </label>
+  <label>Volume <span id="gain-val"></span>
+    <input type="range" id="gain" min="1" max="12" step="0.25">
+  </label>
+  <label>Noise volume <span id="meow-gain-val"></span>
+    <input type="range" id="meow-gain" min="0" max="3" step="0.05">
+  </label>
+  <div class="settings-row">
+    <button id="test-voice">Test voice</button>
+    <button id="test-meow">Make a noise</button>
+  </div>
+
+  <div class="settings-row">
+    <button id="close-settings">Done</button>
+  </div>
+</div>
+
+<script src="/table.js"></script>
+<script src="/nav.js"></script>
+<script src="/familiar.js"></script>
+</body>
+</html>
